@@ -3,6 +3,8 @@ package com.busticket.controllers;
 import com.busticket.models.Booking;
 import com.busticket.services.BookingService;
 import com.fasterxml.jackson.databind.introspect.Annotated;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.collections.FXCollections;
@@ -49,9 +51,7 @@ public class BookingController {
 
     private void setupComboBoxes() {
         // Populate locations and bus types
-        ObservableList<String> locations = FXCollections.observableArrayList(
-                bookingService.getAllLocations()
-        );
+        ObservableList<String> locations = FXCollections.observableArrayList(bookingService.getAllLocations());
         fromLocation.setItems(locations);
         toLocation.setItems(locations);
 
@@ -62,7 +62,26 @@ public class BookingController {
     }
 
     private void setupTable() {
-        // Setup table columns
+        // Configure cell value factories for each column
+        busNameColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getBus().getBusName()));
+
+        departureColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getSchedule().getDepartureTime().toString()));
+
+        arrivalColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getSchedule().getArrivalTime().toString()));
+
+        typeColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getBus().getBusType().toString()));
+
+        fareColumn.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getTotalFare()));
+
+        seatsColumn.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getBus().getTotalSeats() - cellData.getValue().getBookedSeats()));
+
+        // Initialize empty observable list
         busScheduleTable.setItems(FXCollections.observableArrayList());
     }
 

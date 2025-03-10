@@ -15,7 +15,7 @@ public class BookingService {
 
     public BookingService() {
         // Initialize DAO (assume proper connection handling)
-//        this.bookingDAO = new BookingDAO(DatabaseConnection.getConnection());
+        this.bookingDAO = new BookingDAO();
     }
 
     public Booking createBooking(Booking booking) {
@@ -32,13 +32,11 @@ public class BookingService {
 
     public List<String> getAllLocations() {
         // Return list of available locations
-        List<String> locations = new ArrayList<>();
-        // Implement location fetching logic
-        return locations;
+        List<String> allLocations = bookingDAO.getLocations();
+        return allLocations;
     }
 
-    public List<Booking> searchAvailableSchedules(String from, String to,
-                                                  LocalDate date, String busType) {
+    public List<Booking> searchAvailableSchedules(String from, String to, LocalDate date, String busType) {
         try {
             // Input validation
             if (from == null || from.trim().isEmpty()) {
@@ -66,7 +64,7 @@ public class BookingService {
             }
 
             // Search for available schedules
-            return bookingDAO.searchAvailableSchedules(
+            return bookingDAO.searchSchedules(
                     from.trim(),
                     to.trim(),
                     date,

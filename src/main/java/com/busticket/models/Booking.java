@@ -11,6 +11,9 @@ public class Booking {
     private LocalDate travelDate;
     private LocalDateTime bookingDate;
     private BigDecimal totalFare;
+    private Bus bus;
+    private Schedule schedule;
+    private int bookedSeats;
 
     // Default constructor
     public Booking() {
@@ -75,6 +78,32 @@ public class Booking {
     public void setTotalFare(BigDecimal totalFare) {
         this.totalFare = totalFare;
     }
+
+    public Bus getBus() {
+        return bus;
+    }
+
+    public void setBus(Bus bus) {
+        this.bus = bus;
+    }
+
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
+    }
+
+    // New getter and setter for bookedSeats
+    public int getBookedSeats() {
+        return bookedSeats;
+    }
+
+    public void setBookedSeats(int bookedSeats) {
+        this.bookedSeats = bookedSeats;
+    }
+
 
     @Override
     public String toString() {

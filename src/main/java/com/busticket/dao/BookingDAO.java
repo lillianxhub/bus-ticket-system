@@ -1,56 +1,93 @@
 package com.busticket.dao;
 
+import com.busticket.config.DatabaseConnection;
 import com.busticket.models.Booking;
+import com.busticket.models.Bus;
+import com.busticket.models.Schedule;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.math.BigDecimal;
+//import java.math.BigDecimal;
 
 public class BookingDAO {
-    private Connection connection; // Assume this is initialized through constructor
+    private Connection connection;
 
-    public BookingDAO(Connection connection) {
-        this.connection = connection;
+    public BookingDAO() {
+        try {
+            this.connection = DatabaseConnection.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public List<Booking> searchAvailableSchedules(String from, String to, LocalDate date, String busType) throws SQLException {
-        List<Booking> availableSchedules = new ArrayList<>();
+    public List<Booking> searchSchedules(String from, String to, LocalDate date, String busType) throws SQLException {
+        List<Booking> Schedules = new ArrayList<>();
 
         String sql = """
-        SELECT b.*, s.*, bus.* 
-        FROM schedules s
-        JOIN buses bus ON s.busID = bus.busID
-        LEFT JOIN bookings b ON s.scheduleID = b.scheduleID AND b.travelDate = ?
-        WHERE s.origin = ? 
-        AND s.destination = ?
-        AND (?::text IS NULL OR bus.busType = ?::text)
-        AND (
-            b.bookingID IS NULL 
-            OR (
-                SELECT COUNT(*) 
-                FROM seats seat 
+        SELECT
+            b.*, s.*, bus.*,
+            COALESCE((
+                SELECT COUNT(*)
+                FROM seats seat
                 WHERE seat.bookingID = b.bookingID
-            ) < bus.totalSeats
-        )
-    """;
+                ), 0) as bookedSeats
+            FROM schedules s
+            JOIN bus bus ON s.busID = bus.busID
+            LEFT JOIN bookings b ON s.scheduleID = b.scheduleID AND b.travelDate = ?
+            WHERE s.origin = ?
+            AND s.destination = ?
+            AND (bus.busType = ?)
+            AND (
+                b.bookingID IS NULL
+                OR (
+                SELECT COUNT(*)
+                    FROM seats seat
+                    WHERE seat.bookingID = b.bookingID
+                ) < bus.totalSeats
+            )
+        """;
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setDate(1, Date.valueOf(date));
             stmt.setString(2, from);
             stmt.setString(3, to);
             stmt.setString(4, busType);
-            stmt.setString(5, busType);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     Booking booking = mapResultSetToBooking(rs);
-                    availableSchedules.add(booking);
+                    Schedules.add(booking);
                 }
             }
         }
 
-        return availableSchedules;
+        return Schedules;
+    }
+
+    public List<String> getLocations() {
+        List<String> locations = new ArrayList<>();
+        String sql = """
+        SELECT DISTINCT location 
+        FROM (
+            SELECT origin as location FROM schedules
+            UNION
+            SELECT destination as location FROM schedules
+        ) all_locations 
+        ORDER BY location""";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                locations.add(rs.getString("location"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error fetching locations", e);
+        }
+
+        return locations;
     }
 
     public Booking save(Booking booking) throws SQLException {
@@ -111,13 +148,40 @@ public class BookingDAO {
     }
 
     private Booking mapResultSetToBooking(ResultSet rs) throws SQLException {
-        return new Booking(
+        Booking booking = new Booking(
                 rs.getInt("bookingID"),
                 rs.getInt("id"),
                 rs.getInt("scheduleID"),
-                rs.getDate("travelDate").toLocalDate(),
-                rs.getTimestamp("bookingDate").toLocalDateTime(),
+                rs.getDate("travelDate") != null ? rs.getDate("travelDate").toLocalDate() : null,
+                rs.getTimestamp("bookingDate") != null ? rs.getTimestamp("bookingDate").toLocalDateTime() : null,
                 rs.getBigDecimal("totalFare")
         );
+
+        // Create and set Bus object
+        Bus bus = new Bus(
+                rs.getInt("busID"),
+                rs.getString("busName"),
+                Bus.BusType.valueOf(rs.getString("busType")),
+                rs.getInt("totalSeats")
+        );
+        booking.setBus(bus);
+
+        // Create and set Schedule object
+        Schedule schedule = new Schedule(
+                rs.getInt("scheduleID"),
+                rs.getInt("busID"),
+                rs.getString("origin"),
+                rs.getString("destination"),
+                rs.getTime("departureTime").toLocalTime(),
+                rs.getTime("arrivalTime").toLocalTime(),
+                rs.getBigDecimal("fare")
+        );
+        booking.setSchedule(schedule);
+
+        // Set booked seats count
+        booking.setBookedSeats(rs.getInt("bookedSeats"));
+
+        return booking;
     }
+
 }
