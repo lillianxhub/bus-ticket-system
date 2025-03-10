@@ -2,6 +2,7 @@ package com.busticket.controllers;
 
 import com.busticket.models.Booking;
 import com.busticket.services.BookingService;
+import com.busticket.utils.SceneManager;
 import com.fasterxml.jackson.databind.introspect.Annotated;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -111,11 +112,13 @@ public class BookingController {
             return;
         }
         // Navigate to seat selection view
+        SceneManager.switchScene("/fxml/seat_selection.fxml");
     }
 
     @FXML
     private void handleBack() {
         // Navigate back to previous view
+        SceneManager.switchScene("/fxml/login.fxml");
     }
 
     private void showAlert(String message) {
