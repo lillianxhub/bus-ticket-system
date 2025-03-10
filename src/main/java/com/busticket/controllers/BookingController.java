@@ -76,7 +76,7 @@ public class BookingController {
                 new SimpleStringProperty(cellData.getValue().getBus().getBusType().toString()));
 
         fareColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getTotalFare()));
+                new SimpleObjectProperty<>(cellData.getValue().getSchedule().getFare()));
 
         seatsColumn.setCellValueFactory(cellData ->
                 new SimpleObjectProperty<>(cellData.getValue().getBus().getTotalSeats() - cellData.getValue().getBookedSeats()));
