@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="fxml.AdminManageRoutes"
+            prefHeight="600.0" prefWidth="800.0">
+    <VBox spacing="20" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Text styleClass="header-text" text="Manage Routes"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="Add New Route" onAction="#handleAddRoute"/>
+        </HBox>
+
+        <TableView fx:id="routesTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn text="Route ID" fx:id="routeIdColumn"/>
+                <TableColumn text="From" fx:id="fromColumn"/>
+                <TableColumn text="To" fx:id="toColumn"/>
+                <TableColumn text="Distance" fx:id="distanceColumn"/>
+                <TableColumn text="Duration" fx:id="durationColumn"/>
+                <TableColumn text="Base Fare" fx:id="fareColumn"/>
+                <TableColumn text="Actions" fx:id="actionsColumn"/>
+            </columns>
+        </TableView>
+    </VBox>
+</AnchorPane>

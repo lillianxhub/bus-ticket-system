@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="fxml.SeatSelection"
+            prefHeight="600.0" prefWidth="800.0">
+    <BorderPane AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+                AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+        <top>
+            <VBox spacing="10" alignment="CENTER">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20"/>
+                </padding>
+                <Text styleClass="header-text" text="Select Your Seats"/>
+                <HBox spacing="20" alignment="CENTER">
+                    <Label text="Bus: "/>
+                    <Label fx:id="busNameLabel"/>
+                    <Label text="Date: "/>
+                    <Label fx:id="dateLabel"/>
+                </HBox>
+            </VBox>
+        </top>
+
+        <center>
+            <GridPane fx:id="seatingGrid" alignment="CENTER" hgap="10" vgap="10">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20"/>
+                </padding>
+            </GridPane>
+        </center>
+
+        <right>
+            <VBox spacing="10" style="-fx-background-color: #f0f0f0;" prefWidth="200">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20"/>
+                </padding>
+                <Text text="Selected Seats"/>
+                <ListView fx:id="selectedSeatsList" VBox.vgrow="ALWAYS"/>
+                <Text text="Total Amount: "/>
+                <Label fx:id="totalAmountLabel"/>
+                <Button text="Proceed to Payment" onAction="#handlePayment" maxWidth="Infinity"/>
+                <Button text="Back" onAction="#handleBack" maxWidth="Infinity"/>
+            </VBox>
+        </right>
+    </BorderPane>
+</AnchorPane>

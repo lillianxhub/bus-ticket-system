@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.busticket.controllers.DashboardController"
+            prefHeight="600.0" prefWidth="800.0">
+    <BorderPane AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+                AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+        <top>
+            <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #f0f0f0;">
+                <padding>
+                    <Insets top="10" right="20" bottom="10" left="20"/>
+                </padding>
+                <Label text="Bus Ticketing System" styleClass="title-label"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button fx:id="profileButton" text="Profile"/>
+                <Button fx:id="logoutButton" text="Logout"/>
+            </HBox>
+        </top>
+
+        <left>
+            <VBox spacing="5" style="-fx-background-color: #e0e0e0;" prefWidth="200">
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </padding>
+                <Button text="Book Ticket" maxWidth="Infinity" onAction="#handleBookTicket"/>
+                <Button text="My Bookings" maxWidth="Infinity" onAction="#handleMyBookings"/>
+                <Button text="View Schedule" maxWidth="Infinity" onAction="#handleViewSchedule"/>
+            </VBox>
+        </left>
+
+        <center>
+            <VBox spacing="20" alignment="CENTER">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20"/>
+                </padding>
+                <Text text="Welcome to Bus Ticketing System"/>
+
+                <GridPane hgap="20" vgap="20" alignment="CENTER">
+                    <VBox styleClass="dashboard-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <Text text="Active Bookings"/>
+                        <Label fx:id="activeBookingsCount" text="0"/>
+                    </VBox>
+
+                    <VBox styleClass="dashboard-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <Text text="Available Buses"/>
+                        <Label fx:id="availableBusesCount" text="0"/>
+                    </VBox>
+                </GridPane>
+            </VBox>
+        </center>
+    </BorderPane>
+</AnchorPane>

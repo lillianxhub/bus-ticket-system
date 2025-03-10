@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="fxml.TicketView"
+            prefHeight="500.0" prefWidth="400.0">
+    <VBox spacing="15" styleClass="ticket-container" AnchorPane.topAnchor="0"
+          AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+
+        <Text styleClass="ticket-header" text="Bus Ticket"/>
+
+        <Separator/>
+
+        <GridPane hgap="10" vgap="10">
+            <Label text="Booking ID:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <Label fx:id="bookingIdLabel" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+            <Label text="Passenger:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <Label fx:id="passengerLabel" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+            <Label text="From:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <Label fx:id="fromLabel" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+            <Label text="To:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <Label fx:id="toLabel" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+            <Label text="Date:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+            <Label fx:id="dateLabel" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+            <Label text="Bus:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+            <Label fx:id="busLabel" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+            <Label text="Seat No:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+            <Label fx:id="seatLabel" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+
+            <Label text="Amount:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+            <Label fx:id="amountLabel" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+        </GridPane>
+
+        <Separator/>
+
+        <HBox spacing="10" alignment="CENTER">
+            <Button text="Download PDF" onAction="#handleDownload"/>
+            <Button text="Print" onAction="#handlePrint"/>
+        </HBox>
+    </VBox>
+</AnchorPane>

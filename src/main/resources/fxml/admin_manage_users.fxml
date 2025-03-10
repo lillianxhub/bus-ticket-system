@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="fxml.AdminManageUsers"
+            prefHeight="600.0" prefWidth="800.0">
+    <VBox spacing="20" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Text styleClass="header-text" text="Manage Users"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <TextField fx:id="searchField" promptText="Search users..."/>
+            <ComboBox fx:id="filterStatus" promptText="Filter by Status"/>
+            <Button text="Add New User" onAction="#handleAddUser"/>
+        </HBox>
+
+        <TableView fx:id="usersTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn text="User ID" fx:id="userIdColumn"/>
+                <TableColumn text="Username" fx:id="usernameColumn"/>
+                <TableColumn text="Email" fx:id="emailColumn"/>
+                <TableColumn text="Full Name" fx:id="fullNameColumn"/>
+                <TableColumn text="Role" fx:id="roleColumn"/>
+                <TableColumn text="Status" fx:id="statusColumn"/>
+                <TableColumn text="Actions" fx:id="actionsColumn"/>
+            </columns>
+        </TableView>
+    </VBox>
+</AnchorPane>
