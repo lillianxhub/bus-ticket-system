@@ -63,7 +63,7 @@ public class BookingService {
                 }
             }
 
-            // Search for available schedules
+            // Search for available schedules with parameters in correct order
             return bookingDAO.searchSchedules(
                     from.trim(),
                     to.trim(),
@@ -92,7 +92,7 @@ public class BookingService {
     }
 
     private void validateBooking(Booking booking) {
-        if (booking.getUserId() == null || booking.getScheduleId() == null ||
+        if (booking.getUserId() == null || booking.getSchedule().getScheduleId() == null ||
                 booking.getTravelDate() == null || booking.getTotalFare() == null) {
             throw new IllegalArgumentException("All required booking fields must be filled");
         }

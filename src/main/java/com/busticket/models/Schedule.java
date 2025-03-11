@@ -31,6 +31,7 @@ public class Schedule {
 
     // Getters and Setters
     public Integer getScheduleId() {
+        System.out.println("Schedule Id: " + scheduleId);
         return scheduleId;
     }
 

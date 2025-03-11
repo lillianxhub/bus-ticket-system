@@ -49,12 +49,12 @@
 
         <TableView fx:id="busScheduleTable" VBox.vgrow="ALWAYS">
             <columns>
+                <TableColumn fx:id="scheduleColumn" text="Schedule ID" />
                 <TableColumn fx:id="busNameColumn" text="Bus Name" />
                 <TableColumn fx:id="departureColumn" text="Departure" />
                 <TableColumn fx:id="arrivalColumn" text="Arrival" />
                 <TableColumn fx:id="typeColumn" text="Type" />
                 <TableColumn fx:id="fareColumn" text="Fare" />
-                <TableColumn fx:id="seatsColumn" text="Available Seats" />
             </columns>
         </TableView>
 

@@ -1,6 +1,7 @@
 package com.busticket.controllers;
 
 import com.busticket.models.Booking;
+import com.busticket.models.User;
 import com.busticket.services.BookingService;
 import com.busticket.utils.SceneManager;
 import com.fasterxml.jackson.databind.introspect.Annotated;
@@ -29,6 +30,8 @@ public class BookingController {
     @FXML
     private TableView<Booking> busScheduleTable;
     @FXML
+    private TableColumn<Booking, Integer> scheduleColumn;
+    @FXML
     private TableColumn<Booking, String> busNameColumn;
     @FXML
     private TableColumn<Booking, String> departureColumn;
@@ -38,16 +41,25 @@ public class BookingController {
     private TableColumn<Booking, String> typeColumn;
     @FXML
     private TableColumn<Booking, BigDecimal> fareColumn;
-    @FXML
-    private TableColumn<Booking, Integer> seatsColumn;
 
     private BookingService bookingService;
 
     @FXML
     public void initialize() {
-        bookingService = new BookingService();
-        setupComboBoxes();
-        setupTable();
+        User loggedInUser = (User) SceneManager.getSessionData("loggedInUser");
+//        String username = (String) SceneManager.getSessionData("username");
+//        String userRole = (String) SceneManager.getSessionData("userRole");
+
+        // Use the session data as needed
+        if (loggedInUser != null) {
+            // Update UI or perform role-based actions
+            bookingService = new BookingService();
+            setupComboBoxes();
+            setupTable();
+            System.out.println("Booking pane initialized");
+            System.out.println("Logged in user: " + loggedInUser);
+            System.out.println("UserID: " + loggedInUser.getId() + "\n");
+        }
     }
 
     private void setupComboBoxes() {
@@ -64,6 +76,9 @@ public class BookingController {
 
     private void setupTable() {
         // Configure cell value factories for each column
+        scheduleColumn.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getSchedule().getScheduleId()));
+
         busNameColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getBus().getBusName()));
 
@@ -78,9 +93,6 @@ public class BookingController {
 
         fareColumn.setCellValueFactory(cellData ->
                 new SimpleObjectProperty<>(cellData.getValue().getSchedule().getFare()));
-
-        seatsColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getBus().getTotalSeats() - cellData.getValue().getBookedSeats()));
 
         // Initialize empty observable list
         busScheduleTable.setItems(FXCollections.observableArrayList());
@@ -98,11 +110,16 @@ public class BookingController {
             return;
         }
 
-        ObservableList<Booking> schedules = FXCollections.observableArrayList(
-                bookingService.searchAvailableSchedules(from, to, date, type)
-        );
-        busScheduleTable.setItems(schedules);
+        try {
+            ObservableList<Booking> schedules = FXCollections.observableArrayList(
+                    bookingService.searchAvailableSchedules(from, to, date, type)
+            );
+            busScheduleTable.setItems(schedules);
+        } catch (RuntimeException e) {
+            showAlert("Error searching schedules: " + e.getMessage());
+        }
     }
+
 
     @FXML
     private void handleSeatSelection() {
@@ -111,7 +128,33 @@ public class BookingController {
             showAlert("Please select a schedule first");
             return;
         }
-        // Navigate to seat selection view
+//        System.out.println("Selected booking: " + selectedBooking);
+//        System.out.println("Selected bus name: " + busNameColumn.getCellData(selectedBooking));
+//        System.out.println("Selected date: " + travelDate.getValue());
+//        System.out.println("Selected bus type: " + busType.getValue());
+//        System.out.println("Selected fare: " + fareColumn.getCellData(selectedBooking));
+//        System.out.println("Selected departure time: " + departureColumn.getCellData(selectedBooking));
+//        System.out.println("Selected arrival time: " + arrivalColumn.getCellData(selectedBooking));
+//        System.out.println("Selected bus type: " + typeColumn.getCellData(selectedBooking));
+//        System.out.println("Selected departure location: " + fromLocation.getValue());
+//        System.out.println("Selected arrival location: " + toLocation.getValue());
+//        System.out.println("User ID: " + SceneManager.getSessionData("userID") + "\n");
+//        System.out.println("User role: " + SceneManager.getSessionData("role") + "\n");
+//        System.out.println("User email: " + SceneManager.getSessionData("email") + "\n");
+//        System.out.println("User name: " + SceneManager.getSessionData("name") + "\n");
+        System.out.println("Selected schedule ID: " + scheduleColumn.getCellData(selectedBooking) + "\n");
+//
+//        // Navigate to seat selection view
+//        SceneManager.setSessionData("fare", fareColumn.getCellData(selectedBooking));
+//        SceneManager.setSessionData("userId", SceneManager.getSessionData("userID"));
+//        SceneManager.setSessionData("role", SceneManager.getSessionData("role"));
+//        SceneManager.setSessionData("email", SceneManager.getSessionData("email"));
+//        SceneManager.setSessionData("name", SceneManager.getSessionData("name"));
+        SceneManager.setSessionData("selectedSchedule", scheduleColumn.getCellData(selectedBooking));
+        SceneManager.setSessionData("selectedBus", busNameColumn.getCellData(selectedBooking));
+        SceneManager.setSessionData("selectedDate", travelDate.getValue().toString());
+        SceneManager.setSessionData("scheduleID", scheduleColumn.getCellData(selectedBooking));
+        SceneManager.setSessionData("fare", fareColumn.getCellData(selectedBooking));
         SceneManager.switchScene("/fxml/seat_selection.fxml");
     }
 
@@ -127,5 +170,13 @@ public class BookingController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public AnchorPane getBookingPane() {
+        return bookingPane;
+    }
+
+    public void setBookingPane(AnchorPane bookingPane) {
+        this.bookingPane = bookingPane;
     }
 }

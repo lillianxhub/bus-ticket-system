@@ -4,7 +4,6 @@ public class Bus {
     private Integer busId;
     private String busName;
     private BusType busType;
-    private int totalSeats;
 
     // Enum for bus types
     public enum BusType {
@@ -17,11 +16,10 @@ public class Bus {
     }
 
     // Parameterized constructor
-    public Bus(Integer busId, String busName, BusType busType, int totalSeats) {
+    public Bus(Integer busId, String busName, BusType busType) {
         this.busId = busId;
         this.busName = busName;
         this.busType = busType;
-        this.totalSeats = totalSeats;
     }
 
     // Getters and Setters
@@ -49,21 +47,10 @@ public class Bus {
         this.busType = busType;
     }
 
-    public int getTotalSeats() {
-        return totalSeats;
-    }
 
-    public void setTotalSeats(int totalSeats) {
-        this.totalSeats = totalSeats;
-    }
 
     @Override
     public String toString() {
-        return "Bus{" +
-                "busId=" + busId +
-                ", busName='" + busName + '\'' +
-                ", busType=" + busType +
-                ", totalSeats=" + totalSeats +
-                '}';
+        return "Bus{" + "busId=" + busId + ", busName='" + busName + '\'' + ", busType=" + busType;
     }
 }

@@ -2,18 +2,16 @@ package com.busticket.models;
 
 public class Seat {
     private Integer seatId;
-    private Integer bookingId;
-    private String seatNumber;
+    private String seatCode;
 
     // Default constructor
     public Seat() {
     }
 
     // Parameterized constructor
-    public Seat(Integer seatId, Integer bookingId, String seatNumber) {
+    public Seat(Integer seatId, String seatNumber) {
         this.seatId = seatId;
-        this.bookingId = bookingId;
-        this.seatNumber = seatNumber;
+        this.seatCode = seatNumber;
     }
 
     // Getters and Setters
@@ -25,28 +23,19 @@ public class Seat {
         this.seatId = seatId;
     }
 
-    public Integer getBookingId() {
-        return bookingId;
+    public String getSeatCode() {
+        return seatCode;
     }
 
-    public void setBookingId(Integer bookingId) {
-        this.bookingId = bookingId;
-    }
-
-    public String getSeatNumber() {
-        return seatNumber;
-    }
-
-    public void setSeatNumber(String seatNumber) {
-        this.seatNumber = seatNumber;
+    public void setSeatCode(String seatCode) {
+        this.seatCode = seatCode;
     }
 
     @Override
     public String toString() {
         return "Seat{" +
                 "seatId=" + seatId +
-                ", bookingId=" + bookingId +
-                ", seatNumber='" + seatNumber + '\'' +
+                ", seatCode='" + seatCode + '\'' +
                 '}';
     }
 }

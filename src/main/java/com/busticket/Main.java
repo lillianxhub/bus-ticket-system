@@ -26,8 +26,8 @@ public class Main extends Application {
 
         stage.setTitle("Bus Ticketing System");
         stage.setScene(scene);
-        stage.setMinWidth(800);
-        stage.setMinHeight(600);
+        stage.setMinWidth(600);
+        stage.setMinHeight(500);
         stage.show();
 
         // Initialize the scene manager

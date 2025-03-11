@@ -40,14 +40,15 @@ public class SceneManager {
             FXMLLoader loader = new FXMLLoader(SceneManager.class.getResource(fxmlPath));
             if (controller != null) {
                 loader.setController(controller);
+
             }
 
             Parent root = loader.load();
             Scene scene = new Scene(root);
-            URL cssUrl = SceneManager.class.getResource("/css/application.css");
-            if (cssUrl != null) {
-                scene.getStylesheets().add(cssUrl.toExternalForm());
-            }
+//            URL cssUrl = SceneManager.class.getResource("/css/application.css");
+//            if (cssUrl != null) {
+//                scene.getStylesheets().add(cssUrl.toExternalForm());
+//            }
 
 
             primaryStage.setScene(scene);
@@ -70,10 +71,10 @@ public class SceneManager {
             Scene scene = new Scene(root);
 
             // Add CSS if needed
-            URL cssLocation = SceneManager.class.getResource("/css/styles.css");
-            if (cssLocation != null) {
-                scene.getStylesheets().add(cssLocation.toExternalForm());
-            }
+//            URL cssLocation = SceneManager.class.getResource("/css/styles.css");
+//            if (cssLocation != null) {
+//                scene.getStylesheets().add(cssLocation.toExternalForm());
+//            }
 
             Stage stage = event != null ?
                     (Stage) ((Node) event.getSource()).getScene().getWindow() :

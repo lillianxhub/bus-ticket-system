@@ -92,19 +92,37 @@ public class AuthController implements Initializable {
         }
 
         Optional<User> userOpt = authService.login(username, password);
+        System.out.println("User: " + userOpt);
+        System.out.println("User role: " + userOpt.map(User::getRole));
+        System.out.println("User role: " + userOpt.map(User::getRole).orElse(null));
+        System.out.println("User ID: " + userOpt.map(User::getId).orElse(null));
+        System.out.println("User email: " + userOpt.map(User::getEmail).orElse(null));
+        
+        SceneManager.setSessionData("username", username);
 
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
-            SceneManager.setSessionData("currentUser", user);
+        try {
+            if (userOpt.isPresent()) {
+                User user = userOpt.get();
+                SceneManager.setSessionData("currentUser", user);
+                System.out.println("Current user: " + user);
 
-            if (User.UserRole.ADMIN == user.getRole()) {
-                SceneManager.switchScene("/fxml/admin_dashboard.fxml");
+                // Store user data in session
+                SceneManager.setSessionData("loggedInUser", user);
+                SceneManager.setSessionData("username", user.getUsername());
+                SceneManager.setSessionData("userRole", user.getRole());
+
+                if (User.UserRole.ADMIN == user.getRole()) {
+                   SceneManager.switchScene("/fxml/admin_dashboard.fxml");
+                } else {
+                   SceneManager.switchScene("/fxml/booking.fxml");
+                }
             } else {
-                SceneManager.switchScene("/fxml/booking.fxml");
+                AlertHelper.showErrorAlert("Login Failed", "Invalid username or password.");
             }
-        } else {
-            AlertHelper.showErrorAlert("Login Failed", "Invalid username or password.");
-        }
+        } catch (Exception e){
+        AlertHelper.showErrorAlert("Login Error", "An error occurred during login. Please try again later.");
+    }
+
     }
 
     @FXML

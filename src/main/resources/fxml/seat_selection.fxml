@@ -13,7 +13,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="SeatSelectionPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.busticket.controllers.SeatSelectionController">
+<AnchorPane fx:id="SeatSelectionPane"
+            prefHeight="600.0" prefWidth="800.0"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.busticket.controllers.SeatSelectionController">
     <BorderPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
         <top>
             <VBox alignment="CENTER" spacing="10">
@@ -54,36 +58,36 @@
                <RowConstraints minHeight="10.0" prefHeight="30.0" />
             </rowConstraints>
             <children>
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="115.0" text="0A" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="100.0" text="1A" wrapText="true" GridPane.rowIndex="1" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="115.0" text="2A" GridPane.rowIndex="2" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="115.0" text="3A" GridPane.rowIndex="3" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="115.0" text="4A" GridPane.rowIndex="4" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="115.0" text="5A" GridPane.rowIndex="5" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="115.0" text="6A" GridPane.rowIndex="6" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="115.0" text="7A" GridPane.rowIndex="7" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="115.0" text="8A" GridPane.rowIndex="8" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="115.0" text="9A" GridPane.rowIndex="9" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="100.0" text="0B" wrapText="true" GridPane.columnIndex="2" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="100.0" text="1B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="100.0" text="2B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="100.0" text="3B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="100.0" text="4B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="100.0" text="5B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="100.0" text="6B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="100.0" text="7B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="100.0" text="8B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="100.0" text="9B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="100.0" text="0C" wrapText="true" GridPane.columnIndex="3" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="100.0" text="1C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="100.0" text="2C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="100.0" text="3C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="100.0" text="4C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="100.0" text="5C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="100.0" text="6C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="6" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="100.0" text="7C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="7" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="100.0" text="8C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="8" />
-               <Label alignment="CENTER" prefHeight="17.0" prefWidth="100.0" text="9C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+               <Button fx:id="0A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" wrapText="true" text="0A" />
+               <Button fx:id="1A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="1A" wrapText="true" GridPane.rowIndex="1" />
+               <Button fx:id="2A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="2A" wrapText="true" GridPane.rowIndex="2" />
+               <Button fx:id="3A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="3A" wrapText="true" GridPane.rowIndex="3" />
+               <Button fx:id="4A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="4A" wrapText="true" GridPane.rowIndex="4" />
+               <Button fx:id="5A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="5A" wrapText="true" GridPane.rowIndex="5" />
+               <Button fx:id="6A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="6A" wrapText="true" GridPane.rowIndex="6" />
+               <Button fx:id="7A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="7A" wrapText="true" GridPane.rowIndex="7" />
+               <Button fx:id="8A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="8A" wrapText="true" GridPane.rowIndex="8" />
+               <Button fx:id="9A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="9A" wrapText="true" GridPane.rowIndex="9" />
+               <Button fx:id="0B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="0B" wrapText="true" GridPane.columnIndex="2" />
+               <Button fx:id="1B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="1B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+               <Button fx:id="2B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="2B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+               <Button fx:id="3B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="3B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+               <Button fx:id="4B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="4B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+               <Button fx:id="5B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="5B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+               <Button fx:id="6B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="6B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+               <Button fx:id="7B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="7B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+               <Button fx:id="8B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="8B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+               <Button fx:id="9B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="9B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+               <Button fx:id="0C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="0C" wrapText="true" GridPane.columnIndex="3" />
+               <Button fx:id="1C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="1C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+               <Button fx:id="2C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="2C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+               <Button fx:id="3C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="3C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+               <Button fx:id="4C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="4C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+               <Button fx:id="5C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="5C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+               <Button fx:id="6C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="6C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+               <Button fx:id="7C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="7C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+               <Button fx:id="8C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="8C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+               <Button fx:id="9C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="9C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="9" />
             </children>
             </GridPane>
         </center>
@@ -93,11 +97,16 @@
                 <padding>
                     <Insets bottom="20" left="20" right="20" top="20" />
                 </padding>
-                <Text text="Selected Seats" />
-                <ListView fx:id="selectedSeatsList" VBox.vgrow="ALWAYS" />
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets bottom="20" left="20" right="20" top="20" />
+                        </padding>
+                        <Label text="Selected Seats" />
+                        <ListView fx:id="selectedSeatsListView" VBox.vgrow="ALWAYS" />
+                    </VBox>
                 <Text text="Total Amount: " />
                 <Label fx:id="totalAmountLabel" />
-<!--                <Button text="Proceed to Payment" onAction="#handlePayment" maxWidth="Infinity"/>-->
+                <Button maxWidth="Infinity" onAction="#handleSubmit" text="Book" />
                 <Button maxWidth="Infinity" onAction="#handleBack" text="Back" />
             </VBox>
         </right>

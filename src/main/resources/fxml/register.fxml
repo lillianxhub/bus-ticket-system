@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="registerPane" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.busticket.controllers.AuthController">
-    <VBox alignment="CENTER" layoutY="-244.0" prefHeight="347.0" prefWidth="641.0" spacing="15" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <VBox alignment="CENTER" layoutY="-244.0" spacing="15" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <padding>
             <Insets bottom="20" left="40" right="40" top="20" />
         </padding>
@@ -29,7 +29,7 @@
          </font></Text>
       <Line endX="459.5" startX="-100.0" stroke="#767ec2" />
 
-        <GridPane alignment="CENTER" hgap="10" vgap="10">
+        <GridPane alignment="CENTER" hgap="10.0" vgap="10.0">
             <Label text="Full Name:" textFill="#66d2ce" GridPane.columnIndex="0" GridPane.rowIndex="0" />
             <TextField fx:id="regFullName" prefWidth="265.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
    
@@ -39,7 +39,10 @@
             <Label text="Phone:" textFill="#66d2ce" GridPane.columnIndex="0" GridPane.rowIndex="2" />
             <TextField fx:id="regPhone" GridPane.columnIndex="1" GridPane.rowIndex="2" />
    
-            <Label text="Address:" textFill="#66d2ce" GridPane.rowIndex="5" />
+            <Label text="Address:" textFill="#66d2ce" GridPane.rowIndex="5">
+            <GridPane.margin>
+               <Insets bottom="15.0" />
+            </GridPane.margin></Label>
             <TextArea fx:id="regAddress" prefHeight="0.0" prefWidth="265.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
    
             <Label text="Username:" textFill="#66d2ce" GridPane.rowIndex="6" />

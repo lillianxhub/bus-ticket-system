@@ -8,9 +8,11 @@ public class Booking {
     private Integer bookingId;
     private Integer userId;
     private Integer scheduleId;
+    private Integer seatId;
     private LocalDate travelDate;
     private LocalDateTime bookingDate;
     private BigDecimal totalFare;
+    private String status;
     private Bus bus;
     private Schedule schedule;
     private int bookedSeats;
@@ -20,14 +22,14 @@ public class Booking {
     }
 
     // Parameterized constructor
-    public Booking(Integer bookingId, Integer userId, Integer scheduleId,
-                   LocalDate travelDate, LocalDateTime bookingDate, BigDecimal totalFare) {
-        this.bookingId = bookingId;
+    public Booking(Integer userId, Integer scheduleId, Integer seatId, LocalDate travelDate, BigDecimal totalFare
+    ) {
         this.userId = userId;
         this.scheduleId = scheduleId;
+        this.seatId = seatId;
         this.travelDate = travelDate;
-        this.bookingDate = bookingDate;
         this.totalFare = totalFare;
+        this.status = "Confirmed";
     }
 
     // Getters and Setters
@@ -47,12 +49,20 @@ public class Booking {
         this.userId = userId;
     }
 
-    public Integer getScheduleId() {
-        return scheduleId;
+//    public Integer getScheduleId() {
+//        return scheduleId;
+//    }
+//
+//    public void setScheduleId(Integer scheduleId) {
+//        this.scheduleId = scheduleId;
+//    }
+
+    public Integer getSeatId() {
+        return seatId;
     }
 
-    public void setScheduleId(Integer scheduleId) {
-        this.scheduleId = scheduleId;
+    public void setSeatId(Integer seatId) {
+        this.seatId = seatId;
     }
 
     public LocalDate getTravelDate() {
@@ -102,6 +112,14 @@ public class Booking {
 
     public void setBookedSeats(int bookedSeats) {
         this.bookedSeats = bookedSeats;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 
