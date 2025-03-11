@@ -26,7 +26,7 @@ DROP TABLE IF EXISTS `bookings`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `bookings` (
   `bookingID` int NOT NULL AUTO_INCREMENT,
-  `id` int NOT NULL,
+  `userID` int NOT NULL,
   `scheduleID` int DEFAULT NULL,
   `seatID` int DEFAULT NULL,
   `travelDate` date NOT NULL,
@@ -34,13 +34,13 @@ CREATE TABLE `bookings` (
   `totalFare` decimal(10,2) NOT NULL,
   `status` enum('pending','confirmed') DEFAULT 'pending',
   PRIMARY KEY (`bookingID`),
-  UNIQUE KEY `scheduleID` (`scheduleID`,`seatID`),
-  KEY `id` (`id`),
+  UNIQUE KEY `schedule_seat_date` (`scheduleID`,`seatID`,`travelDate`),
+  KEY `id` (`userID`),
   KEY `seatID` (`seatID`),
-  CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`id`) REFERENCES `users` (`id`),
+  CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`id`),
   CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`scheduleID`) REFERENCES `schedules` (`scheduleID`),
   CONSTRAINT `bookings_ibfk_3` FOREIGN KEY (`seatID`) REFERENCES `seats` (`seatID`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -49,7 +49,7 @@ CREATE TABLE `bookings` (
 
 LOCK TABLES `bookings` WRITE;
 /*!40000 ALTER TABLE `bookings` DISABLE KEYS */;
-INSERT INTO `bookings` VALUES (17,1,1,1,'2025-03-11','2025-03-11 09:24:31',600.00,'pending'),(18,1,1,2,'2025-03-11','2025-03-11 09:27:05',600.00,'pending'),(19,1,1,3,'2025-03-11','2025-03-11 09:27:05',600.00,'pending');
+INSERT INTO `bookings` VALUES (17,1,1,1,'2025-03-11','2025-03-11 09:24:31',600.00,'pending'),(18,1,1,2,'2025-03-11','2025-03-11 09:27:05',600.00,'pending'),(19,1,1,3,'2025-03-11','2025-03-11 09:27:05',600.00,'pending'),(33,1,1,28,'2025-03-11','2025-03-11 12:52:52',600.00,'pending'),(34,1,1,29,'2025-03-11','2025-03-11 12:52:52',600.00,'pending'),(35,1,1,30,'2025-03-11','2025-03-11 12:52:52',600.00,'pending'),(36,1,1,1,'2025-03-12','2025-03-11 12:53:06',600.00,'pending'),(37,1,1,2,'2025-03-12','2025-03-11 12:53:06',600.00,'pending'),(38,1,1,3,'2025-03-12','2025-03-11 12:53:06',600.00,'pending'),(39,1,1,1,'2025-03-13','2025-03-11 12:53:28',600.00,'pending'),(40,1,1,2,'2025-03-13','2025-03-11 12:53:28',600.00,'pending'),(41,1,1,3,'2025-03-13','2025-03-11 12:53:28',600.00,'pending');
 /*!40000 ALTER TABLE `bookings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -177,4 +177,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-11 16:55:35
+-- Dump completed on 2025-03-11 19:54:41

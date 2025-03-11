@@ -83,7 +83,7 @@ public class BookingDAO {
     }
 
     public Booking save(Booking booking) throws SQLException {
-        String sql = "INSERT INTO bookings (id, scheduleID, travelDate, totalFare) " +
+        String sql = "INSERT INTO bookings (userID, scheduleID, travelDate, totalFare) " +
                 "VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -109,32 +109,56 @@ public class BookingDAO {
     }
 
     public int createBooking(Booking booking) throws SQLException {
-        String sql = "INSERT INTO bookings (id, scheduleID, seatID, travelDate, totalFare, status) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+        // First check if seat is available using SeatDAO
+        SeatDAO seatDAO = new SeatDAO();
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            pstmt.setInt(1, booking.getUserId());
-            pstmt.setInt(2, booking.getSchedule().getScheduleId());
-            pstmt.setInt(3, booking.getSeatId());
-            pstmt.setDate(4, Date.valueOf(booking.getTravelDate()));
-            pstmt.setBigDecimal(5, booking.getTotalFare());
-            pstmt.setString(6, booking.getStatus());
+        // Add a lock to prevent concurrent bookings of the same seat
+        String lockSql = "SELECT * FROM bookings WHERE scheduleID = ? AND seatID = ? AND travelDate = ? FOR UPDATE";
 
-            int affectedRows = pstmt.executeUpdate();
+        try (PreparedStatement lockStmt = connection.prepareStatement(lockSql)) {
+            lockStmt.setInt(1, booking.getSchedule().getScheduleId());
+            lockStmt.setInt(2, booking.getSeatId());
+            lockStmt.setDate(3, Date.valueOf(booking.getTravelDate()));
 
-            if (affectedRows == 0) {
-                throw new SQLException("Creating booking failed, no rows affected.");
-            }
+            try (ResultSet rs = lockStmt.executeQuery()) {
+                // Check availability after acquiring lock
+                if (!seatDAO.isSeatAvailable(booking.getSchedule().getScheduleId(),
+                        booking.getSeatId(),
+                        booking.getTravelDate())) {
+                    throw new SQLException("Seat is already booked for this date");
+                }
 
-            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    return generatedKeys.getInt(1);
-                } else {
-                    throw new SQLException("Creating booking failed, no ID obtained.");
+                // If seat is available, proceed with booking
+                String sql = "INSERT INTO bookings (userID, scheduleID, seatID, travelDate, totalFare, status) " +
+                        "VALUES (?, ?, ?, ?, ?, ?)";
+
+                try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                    stmt.setInt(1, booking.getUserId());      // Changed from id to userID
+                    stmt.setInt(2, booking.getSchedule().getScheduleId());
+                    stmt.setInt(3, booking.getSeatId());
+                    stmt.setDate(4, Date.valueOf(booking.getTravelDate()));
+                    stmt.setBigDecimal(5, booking.getTotalFare());
+                    stmt.setString(6, booking.getStatus());
+
+                    int affectedRows = stmt.executeUpdate();
+
+                    if (affectedRows == 0) {
+                        throw new SQLException("Creating booking failed, no rows affected.");
+                    }
+
+                    try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                        if (generatedKeys.next()) {
+                            return generatedKeys.getInt(1);
+                        } else {
+                            throw new SQLException("Creating booking failed, no ID obtained.");
+                        }
+                    }
                 }
             }
         }
     }
+
+
 
 
 
@@ -163,7 +187,7 @@ public class BookingDAO {
 
     public List<Booking> findByUserId(Integer userId) throws SQLException {
         List<Booking> bookings = new ArrayList<>();
-        String sql = "SELECT * FROM bookings WHERE id = ?";
+        String sql = "SELECT * FROM bookings WHERE userID = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, userId);
@@ -199,13 +223,6 @@ public class BookingDAO {
         );
 
         // Create Booking with the correct constructor parameters
-//        Booking booking = new Booking(
-//                rs.getInt("id"),             // userId
-//                rs.getInt("scheduleID"),     // scheduleId
-//                rs.getInt("seatID"),         // seatId
-//                rs.getDate("travelDate") != null ? rs.getDate("travelDate").toLocalDate() : null,
-//                rs.getBigDecimal("totolFare") // correct column name from DB
-//        );
         Booking booking = new Booking();
 
         // Set the booking ID if it exists (will be 0 for new schedules)
@@ -217,8 +234,8 @@ public class BookingDAO {
 
         // Try to set optional booking-related fields if they exist
         try {
-            if (rs.getObject("id") != null) {
-                booking.setUserId(rs.getInt("id"));
+            if (rs.getObject("userID") != null) {
+                booking.setUserId(rs.getInt("userID"));
             }
             if (rs.getObject("seatID") != null) {
                 booking.setSeatId(rs.getInt("seatID"));
