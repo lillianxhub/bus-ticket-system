@@ -23,19 +23,23 @@
             <Insets bottom="20" left="20" right="20" top="20" />
         </padding>
 
-        <Text styleClass="header-text" text="Book Your Ticket">
+                    <Text fill="WHITE" styleClass="header-text" text="Book Your Ticket">
          <font>
-            <Font name="Broadway" size="22.0" />
-         </font></Text>
+            <Font size="22.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="300.0" />
+         </VBox.margin>
+      </Text>
 
-        <GridPane alignment="CENTER" hgap="10" vgap="15">
-            <ComboBox fx:id="fromLocation" promptText="From" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-            <ComboBox fx:id="toLocation" promptText="To" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <GridPane alignment="CENTER" hgap="10" vgap="15">
+            <ComboBox fx:id="fromLocation" promptText="From" style="-fx-background-color: #FFFFFF;" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <ComboBox fx:id="toLocation" promptText="To" style="-fx-background-color: #FFFFFF;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-            <DatePicker fx:id="travelDate" promptText="Travel Date" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-            <ComboBox fx:id="busType" promptText="Bus Type" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <DatePicker fx:id="travelDate" promptText="Travel Date" style="-fx-background-color: #FFFFFF;" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <ComboBox fx:id="busType" promptText="Bus Type" style="-fx-background-color: #FFFFFF;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-            <Button onAction="#handleSearch" text="Search Buses" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                        <Button onAction="#handleSearch" style="-fx-background-color: #B2C9AD;" text="Search Buses" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
          <columnConstraints>
             <ColumnConstraints />
             <ColumnConstraints />
@@ -47,20 +51,20 @@
          </rowConstraints>
         </GridPane>
 
-        <TableView fx:id="busScheduleTable" VBox.vgrow="ALWAYS">
+                    <TableView fx:id="busScheduleTable" VBox.vgrow="ALWAYS">
             <columns>
-                <TableColumn fx:id="scheduleColumn" text="Schedule ID" />
-                <TableColumn fx:id="busNameColumn" text="Bus Name" />
-                <TableColumn fx:id="departureColumn" text="Departure" />
-                <TableColumn fx:id="arrivalColumn" text="Arrival" />
-                <TableColumn fx:id="typeColumn" text="Type" />
-                <TableColumn fx:id="fareColumn" text="Fare" />
+                <TableColumn fx:id="scheduleColumn" prefWidth="72.0" text="Schedule ID" />
+                <TableColumn fx:id="busNameColumn" prefWidth="191.0" text="Bus Name" />
+                <TableColumn fx:id="departureColumn" minWidth="6.0" prefWidth="102.0" text="Departure" />
+                <TableColumn fx:id="arrivalColumn" prefWidth="111.0" text="Arrival" />
+                <TableColumn fx:id="typeColumn" prefWidth="188.0" text="Type" />
+                <TableColumn fx:id="fareColumn" prefWidth="98.0" text="Fare" />
             </columns>
         </TableView>
 
-        <HBox alignment="CENTER_RIGHT" spacing="10">
-            <Button onAction="#handleBack" text="Back" />
-            <Button onAction="#handleSeatSelection" text="Select Seats" />
+                    <HBox alignment="CENTER_RIGHT" spacing="10">
+            <Button onAction="#handleBack" text="Back" textFill="#c66969" />
+            <Button onAction="#handleSeatSelection" style="-fx-background-color: #c66969;" text="Select Seats" textFill="WHITE" />
         </HBox>
     </VBox>
 </AnchorPane>

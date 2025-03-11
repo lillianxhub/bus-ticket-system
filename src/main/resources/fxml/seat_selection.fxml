@@ -9,27 +9,45 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="SeatSelectionPane"
-            prefHeight="600.0" prefWidth="800.0"
-            xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.busticket.controllers.SeatSelectionController">
+<AnchorPane fx:id="SeatSelectionPane" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.busticket.controllers.SeatSelectionController">
+   <Pane layoutX="-173.0" layoutY="-186.0" prefHeight="303.0" prefWidth="1003.0" style="-fx-background-color: D76C82;" />
     <BorderPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
         <top>
             <VBox alignment="CENTER" spacing="10">
                 <padding>
                     <Insets bottom="20" left="20" right="20" top="20" />
                 </padding>
-                <Text styleClass="header-text" text="Select Your Seats" />
+                <Text fill="WHITE" styleClass="header-text" text="Select Your Seats">
+               <font>
+                  <Font size="29.0" />
+               </font>
+            </Text>
                 <HBox alignment="CENTER" spacing="20">
-                    <Label text="Bus: " />
-                    <Label fx:id="busNameLabel" />
-                    <Label text="Date: " />
-                    <Label fx:id="dateLabel" />
+                    <Label text="Bus: " textFill="WHITE">
+                  <font>
+                     <Font size="19.0" />
+                  </font>
+               </Label>
+                    <Label fx:id="busNameLabel" textFill="WHITE">
+                  <font>
+                     <Font size="19.0" />
+                  </font></Label>
+                    <Label text="Date: " textFill="WHITE">
+                  <font>
+                     <Font size="19.0" />
+                  </font>
+               </Label>
+                    <Label fx:id="dateLabel" textFill="WHITE">
+                  <font>
+                     <Font size="19.0" />
+                  </font></Label>
                 </HBox>
             </VBox>
         </top>
@@ -40,12 +58,14 @@
                     <Insets bottom="20" left="20" right="20" top="20" />
                 </padding>
             <columnConstraints>
+               <ColumnConstraints />
                <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
                <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
                <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
                <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
             </columnConstraints>
             <rowConstraints>
+               <RowConstraints />
                <RowConstraints minHeight="10.0" prefHeight="30.0" />
                <RowConstraints minHeight="10.0" prefHeight="30.0" />
                <RowConstraints minHeight="10.0" prefHeight="30.0" />
@@ -58,36 +78,36 @@
                <RowConstraints minHeight="10.0" prefHeight="30.0" />
             </rowConstraints>
             <children>
-               <Button fx:id="0A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" wrapText="true" text="0A" />
-               <Button fx:id="1A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="1A" wrapText="true" GridPane.rowIndex="1" />
-               <Button fx:id="2A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="2A" wrapText="true" GridPane.rowIndex="2" />
-               <Button fx:id="3A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="3A" wrapText="true" GridPane.rowIndex="3" />
-               <Button fx:id="4A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="4A" wrapText="true" GridPane.rowIndex="4" />
-               <Button fx:id="5A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="5A" wrapText="true" GridPane.rowIndex="5" />
-               <Button fx:id="6A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="6A" wrapText="true" GridPane.rowIndex="6" />
-               <Button fx:id="7A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="7A" wrapText="true" GridPane.rowIndex="7" />
-               <Button fx:id="8A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="8A" wrapText="true" GridPane.rowIndex="8" />
-               <Button fx:id="9A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="9A" wrapText="true" GridPane.rowIndex="9" />
-               <Button fx:id="0B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="0B" wrapText="true" GridPane.columnIndex="2" />
-               <Button fx:id="1B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="1B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-               <Button fx:id="2B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="2B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-               <Button fx:id="3B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="3B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-               <Button fx:id="4B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="4B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-               <Button fx:id="5B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="5B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-               <Button fx:id="6B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="6B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-               <Button fx:id="7B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="7B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-               <Button fx:id="8B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="8B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-               <Button fx:id="9B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="9B" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-               <Button fx:id="0C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="0C" wrapText="true" GridPane.columnIndex="3" />
-               <Button fx:id="1C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="1C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-               <Button fx:id="2C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="2C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-               <Button fx:id="3C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="3C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-               <Button fx:id="4C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="4C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-               <Button fx:id="5C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="5C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-               <Button fx:id="6C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="6C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="6" />
-               <Button fx:id="7C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="7C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="7" />
-               <Button fx:id="8C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="8C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="8" />
-               <Button fx:id="9C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="9C" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+               <Button fx:id="0A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="0A" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+               <Button fx:id="1A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="1A" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+               <Button fx:id="2A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="2A" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+               <Button fx:id="3A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="3A" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+               <Button fx:id="4A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="4A" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+               <Button fx:id="5A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="5A" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+               <Button fx:id="6A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="6A" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+               <Button fx:id="7A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="7A" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+               <Button fx:id="8A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="8A" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+               <Button fx:id="9A" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="115.0" text="9A" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+               <Button fx:id="0B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="0B" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+               <Button fx:id="1B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="1B" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+               <Button fx:id="2B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="2B" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+               <Button fx:id="3B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="3B" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+               <Button fx:id="4B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="4B" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+               <Button fx:id="5B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="5B" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+               <Button fx:id="6B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="6B" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+               <Button fx:id="7B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="7B" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+               <Button fx:id="8B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="8B" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+               <Button fx:id="9B" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="9B" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="10" />
+               <Button fx:id="0C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="0C" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+               <Button fx:id="1C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="1C" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+               <Button fx:id="2C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="2C" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+               <Button fx:id="3C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="3C" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+               <Button fx:id="4C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="4C" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+               <Button fx:id="5C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="5C" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="6" />
+               <Button fx:id="6C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="6C" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="7" />
+               <Button fx:id="7C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="7C" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="8" />
+               <Button fx:id="8C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="8C" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="9" />
+               <Button fx:id="9C" alignment="CENTER" onMouseClicked="#HandleSelect" prefHeight="17.0" prefWidth="100.0" text="9C" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="10" />
             </children>
             </GridPane>
         </center>
@@ -101,7 +121,14 @@
                         <padding>
                             <Insets bottom="20" left="20" right="20" top="20" />
                         </padding>
-                        <Label text="Selected Seats" />
+                        <Label prefHeight="20.0" prefWidth="91.0" text="Selected Seats">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+                  <VBox.margin>
+                     <Insets left="50.0" />
+                  </VBox.margin></Label>
+               <Line endX="100.0" startX="-100.0" />
                         <ListView fx:id="selectedSeatsListView" VBox.vgrow="ALWAYS" />
                     </VBox>
                 <Text text="Total Amount: " />

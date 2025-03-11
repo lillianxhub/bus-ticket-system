@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="loginPane" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: D76C82;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.busticket.controllers.AuthController">
-    <VBox alignment="CENTER" layoutY="91.0" prefHeight="298.0" prefWidth="300.0" spacing="15" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <VBox alignment="CENTER" prefHeight="298.0" prefWidth="300.0" spacing="15" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <padding>
             <Insets bottom="20" left="40" right="40" top="20" />
         </padding>

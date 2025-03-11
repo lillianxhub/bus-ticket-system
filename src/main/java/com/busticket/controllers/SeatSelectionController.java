@@ -96,7 +96,7 @@ public class SeatSelectionController {
             // Set up listener for selected seats to update total fare automatically
             selectedSeats.addListener((ListChangeListener<String>) change -> {
                 BigDecimal totalFare = farePerSeat.multiply(BigDecimal.valueOf(selectedSeats.size()));
-                totalAmountLabel.setText("$" + totalFare);
+                totalAmountLabel.setText("฿ " + totalFare);
             });
 
             // Initialize ListView
