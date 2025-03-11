@@ -11,6 +11,7 @@ import com.busticket.models.Schedule;
 import com.busticket.models.User;
 import com.busticket.utils.SceneManager;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,6 +47,9 @@ public class SeatSelectionController {
     @FXML
     private ListView<String> selectedSeatsListView;
 
+    @FXML
+    private Label totalAmountLabel;
+
     private BookingDAO bookingDAO;
     private SeatDAO seatDAO;
 
@@ -70,7 +74,10 @@ public class SeatSelectionController {
             Integer userID = loggedInUser != null ? loggedInUser.getId() : null;
             Integer scheduleID = (Integer) SceneManager.getSessionData("scheduleID");
             String dateStr = (String) SceneManager.getSessionData("selectedDate");
+
             BigDecimal farePerSeat = (BigDecimal) SceneManager.getSessionData("fare");
+
+            totalAmountLabel.setText("฿0.00");
 
             // Debug logging
             System.out.println("Selected seats: " + selectedSeatsSet + "\nFare per seat: " + farePerSeat +
@@ -85,6 +92,12 @@ public class SeatSelectionController {
             if (dateLabel != null) {
                 dateLabel.setText(dateStr != null ? dateStr : "Not selected");
             }
+
+            // Set up listener for selected seats to update total fare automatically
+            selectedSeats.addListener((ListChangeListener<String>) change -> {
+                BigDecimal totalFare = farePerSeat.multiply(BigDecimal.valueOf(selectedSeats.size()));
+                totalAmountLabel.setText("$" + totalFare);
+            });
 
             // Initialize ListView
             if (selectedSeatsListView != null) {
@@ -144,8 +157,6 @@ public class SeatSelectionController {
             }
         });
     }
-
-
 
 
     public void handleBack(ActionEvent actionEvent) {
