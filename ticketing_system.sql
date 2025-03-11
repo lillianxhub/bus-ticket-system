@@ -27,16 +27,20 @@ DROP TABLE IF EXISTS `bookings`;
 CREATE TABLE `bookings` (
   `bookingID` int NOT NULL AUTO_INCREMENT,
   `id` int NOT NULL,
-  `scheduleID` int NOT NULL,
+  `scheduleID` int DEFAULT NULL,
+  `seatID` int DEFAULT NULL,
   `travelDate` date NOT NULL,
   `bookingDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `totalFare` decimal(10,2) NOT NULL,
+  `status` enum('pending','confirmed') DEFAULT 'pending',
   PRIMARY KEY (`bookingID`),
+  UNIQUE KEY `scheduleID` (`scheduleID`,`seatID`),
   KEY `id` (`id`),
-  KEY `scheduleID` (`scheduleID`),
+  KEY `seatID` (`seatID`),
   CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`id`) REFERENCES `users` (`id`),
-  CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`scheduleID`) REFERENCES `schedules` (`scheduleID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`scheduleID`) REFERENCES `schedules` (`scheduleID`),
+  CONSTRAINT `bookings_ibfk_3` FOREIGN KEY (`seatID`) REFERENCES `seats` (`seatID`)
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -45,6 +49,7 @@ CREATE TABLE `bookings` (
 
 LOCK TABLES `bookings` WRITE;
 /*!40000 ALTER TABLE `bookings` DISABLE KEYS */;
+INSERT INTO `bookings` VALUES (17,1,1,1,'2025-03-11','2025-03-11 09:24:31',600.00,'pending'),(18,1,1,2,'2025-03-11','2025-03-11 09:27:05',600.00,'pending'),(19,1,1,3,'2025-03-11','2025-03-11 09:27:05',600.00,'pending');
 /*!40000 ALTER TABLE `bookings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -59,10 +64,9 @@ CREATE TABLE `bus` (
   `busID` int NOT NULL AUTO_INCREMENT,
   `busName` varchar(50) NOT NULL,
   `busType` enum('GOLD_CLASS','FIRST_CLASS') DEFAULT NULL,
-  `totalSeats` int NOT NULL,
   PRIMARY KEY (`busID`),
   UNIQUE KEY `busName` (`busName`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -71,7 +75,7 @@ CREATE TABLE `bus` (
 
 LOCK TABLES `bus` WRITE;
 /*!40000 ALTER TABLE `bus` DISABLE KEYS */;
-INSERT INTO `bus` VALUES (1,'E-san','GOLD_CLASS',32);
+INSERT INTO `bus` VALUES (1,'E-san','GOLD_CLASS'),(2,'Northern ','FIRST_CLASS');
 /*!40000 ALTER TABLE `bus` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -93,7 +97,7 @@ CREATE TABLE `schedules` (
   PRIMARY KEY (`scheduleID`),
   KEY `busID` (`busID`),
   CONSTRAINT `schedules_ibfk_1` FOREIGN KEY (`busID`) REFERENCES `bus` (`busID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,7 +106,7 @@ CREATE TABLE `schedules` (
 
 LOCK TABLES `schedules` WRITE;
 /*!40000 ALTER TABLE `schedules` DISABLE KEYS */;
-INSERT INTO `schedules` VALUES (1,1,'Bangkok','Chiang-mai','19:20:00','04:53:00',693.00);
+INSERT INTO `schedules` VALUES (1,1,'Bangkok','Chiang-mai','00:00:00','01:00:00',600.00),(2,1,'Chiang-mai','Bangkok','01:00:00','02:00:00',620.00),(3,1,'Bangkok','Chiang-mai','02:00:00','03:00:00',610.00);
 /*!40000 ALTER TABLE `schedules` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -115,12 +119,9 @@ DROP TABLE IF EXISTS `seats`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `seats` (
   `seatID` int NOT NULL AUTO_INCREMENT,
-  `bookingID` int NOT NULL,
-  `seatNumber` varchar(10) NOT NULL,
-  PRIMARY KEY (`seatID`),
-  UNIQUE KEY `bookingID` (`bookingID`),
-  CONSTRAINT `seats_ibfk_1` FOREIGN KEY (`bookingID`) REFERENCES `bookings` (`bookingID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `seatCode` char(2) DEFAULT NULL,
+  PRIMARY KEY (`seatID`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,6 +130,7 @@ CREATE TABLE `seats` (
 
 LOCK TABLES `seats` WRITE;
 /*!40000 ALTER TABLE `seats` DISABLE KEYS */;
+INSERT INTO `seats` VALUES (1,'0A'),(2,'0B'),(3,'0C'),(4,'1A'),(5,'1B'),(6,'1C'),(7,'2A'),(8,'2B'),(9,'2C'),(10,'3A'),(11,'3B'),(12,'3C'),(13,'4A'),(14,'4B'),(15,'4C'),(16,'5A'),(17,'5B'),(18,'5C'),(19,'6A'),(20,'6B'),(21,'6C'),(22,'7A'),(23,'7B'),(24,'7C'),(25,'8A'),(26,'8B'),(27,'8C'),(28,'9A'),(29,'9B'),(30,'9C');
 /*!40000 ALTER TABLE `seats` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -153,7 +155,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   CONSTRAINT `chk_email` CHECK ((`email` like _utf8mb4'%@%.%'))
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -162,7 +164,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'test','1234','test@gmail.com','test','test','0112223333','2025-03-10 01:57:40',1,'CUSTOMER');
+INSERT INTO `users` VALUES (1,'test','1234','test@gmail.com','test','test','0112223333','2025-03-10 01:57:40',1,'CUSTOMER'),(2,'j.doe','1234','johndoe@gmail.com','john doe','asdfklasd;jf','0998887777','2025-03-10 19:15:19',1,'CUSTOMER');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -175,4 +177,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-10 19:01:15
+-- Dump completed on 2025-03-11 16:55:35
