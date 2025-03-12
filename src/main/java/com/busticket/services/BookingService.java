@@ -14,7 +14,7 @@ public class BookingService {
     private BookingDAO bookingDAO;
 
     public BookingService() {
-        // Initialize DAO (assume proper connection handling)
+        // Initialize DAO
         this.bookingDAO = new BookingDAO();
     }
 

@@ -22,32 +22,6 @@ public class BookingDAO {
         }
     }
 
-    public Booking save(Booking booking) throws SQLException {
-        String sql = "INSERT INTO bookings (userID, scheduleID, travelDate, totalFare) " +
-                "VALUES (?, ?, ?, ?)";
-
-        try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, booking.getUserId());
-            stmt.setInt(2, booking.getSchedule().getScheduleId());
-            stmt.setDate(3, Date.valueOf(booking.getTravelDate()));
-            stmt.setBigDecimal(4, booking.getTotalFare());
-
-            int affectedRows = stmt.executeUpdate();
-            if (affectedRows == 0) {
-                throw new SQLException("Creating booking failed, no rows affected.");
-            }
-
-            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    booking.setBookingId(generatedKeys.getInt(1));
-                } else {
-                    throw new SQLException("Creating booking failed, no ID obtained.");
-                }
-            }
-        }
-        return booking;
-    }
-
     public Booking createBooking(Booking booking) throws SQLException {
         String sql = "INSERT INTO bookings (userID, scheduleID, seatID, travelDate, totalFare, status) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
@@ -171,31 +145,6 @@ public class BookingDAO {
         } catch (SQLException e) {
             // Ignore missing columns for search results
         }
-
-        return booking;
-    }
-
-    private Booking mapScheduleSearchResults(ResultSet rs) throws SQLException {
-        Booking booking = new Booking();
-        Schedule schedule = new Schedule();
-        Bus bus = new Bus();
-
-        // Map Schedule fields
-        schedule.setScheduleId(rs.getInt("scheduleID"));
-        schedule.setOrigin(rs.getString("origin"));
-        schedule.setDestination(rs.getString("destination"));
-        schedule.setDepartureTime(rs.getTime("departureTime").toLocalTime());
-        schedule.setArrivalTime(rs.getTime("arrivalTime").toLocalTime());
-        schedule.setFare(rs.getBigDecimal("fare"));
-
-        // Map Bus fields
-        bus.setBusId(rs.getInt("busID"));
-        bus.setBusName(rs.getString("busName"));
-        bus.setBusType(Bus.BusType.valueOf(rs.getString("busType")));
-
-        // Set the schedule and bus in booking
-        booking.setSchedule(schedule);
-        booking.setBus(bus);
 
         return booking;
     }

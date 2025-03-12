@@ -6,8 +6,11 @@ import com.busticket.models.Schedule;
 import com.busticket.models.User;
 import com.busticket.services.BookingService;
 import com.busticket.utils.SceneManager;
+import com.busticket.utils.AlertHelper;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -32,12 +35,10 @@ public class TicketViewController {
     @FXML
     private Label amountLabel;
 
-//    private BookingDAO bookingDAO;
-    private BookingService bookingService;
+    private AlertHelper alertHelper;
 
     public TicketViewController() {
-        this.bookingService = new BookingService();
-//        this.bookingDAO = new BookingDAO();
+        this.alertHelper = new AlertHelper();
     }
 
     @FXML
@@ -64,17 +65,17 @@ public class TicketViewController {
             }
 
             if (bookings == null || bookings.isEmpty()) {
-                showError("No booking information found");
+                alertHelper.showErrorAlert("Error:","No booking information found");
                 return;
             }
 
             if (loggedInUser == null) {
-                showError("No user information found");
+                alertHelper.showErrorAlert("Error:","No user information found");
                 return;
             }
 
             if (selectedSeats == null || selectedSeats.isEmpty()) {
-                showError("No seat information found");
+                alertHelper.showErrorAlert("Error:","No seat information found");
                 return;
             }
 
@@ -98,17 +99,9 @@ public class TicketViewController {
             seatLabel.setText(String.join(", ", selectedSeats));
             amountLabel.setText(String.format("%.2f", totalFare));
         } catch (ClassCastException e) {
-            showError("Error processing session data: " + e.getMessage());
+            alertHelper.showErrorAlert("Error: ","Error processing session data: " + e.getMessage());
             e.printStackTrace();
         }
-    }
-
-    private void showError(String message) {
-        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
-            javafx.scene.control.Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
     @FXML

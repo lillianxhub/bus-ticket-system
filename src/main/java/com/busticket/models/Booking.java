@@ -49,14 +49,6 @@ public class Booking {
         this.userId = userId;
     }
 
-//    public Integer getScheduleId() {
-//        return scheduleId;
-//    }
-//
-//    public void setScheduleId(Integer scheduleId) {
-//        this.scheduleId = scheduleId;
-//    }
-
     public Integer getSeatId() {
         return seatId;
     }

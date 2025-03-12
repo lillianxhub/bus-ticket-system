@@ -3,7 +3,6 @@ package com.busticket.services;
 import com.busticket.dao.UserDAO;
 import com.busticket.models.User;
 import com.busticket.utils.PasswordUtils;
-//import com.busticket.utils.PasswordUtils;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -29,12 +28,12 @@ public class AuthService {
             }
 
             // Hash the password
-//            String hashedPassword = PasswordUtils.hashPassword(password);
+            String hashedPassword = PasswordUtils.hashPassword(password);
 
             // Create user object
             User user = new User();
             user.setUsername(username);
-            user.setPassword(password);
+            user.setPassword(hashedPassword);
             user.setEmail(email);
             user.setFullName(fullName);
             user.setPhone(phone);
@@ -61,12 +60,17 @@ public class AuthService {
 //            String hashedPassword = PasswordUtils.hashPassword(password);
 
             // Find user by username
-            Optional<User> userOpt = userDAO.findByUsername(username, password);
+            Optional<User> userOpt = userDAO.findByUsername(username);
 
             // Verify password if user exists
             if (userOpt.isPresent() && userOpt.get().isActive()) {
-                return userOpt;
+                User user = userOpt.get();
+                // Use checkPassword instead of rehashing
+                if (PasswordUtils.checkPassword(password, user.getPassword())) {
+                    return userOpt;
                 }
+            }
+
 
             return Optional.empty();
         } catch (SQLException e) {
@@ -75,43 +79,4 @@ public class AuthService {
             return Optional.empty();
         }
     }
-
-//    public boolean changePassword(int userId, String currentPassword, String newPassword) {
-//        try {
-//            // Find user by ID
-//            Optional<User> userOpt = userDAO.findById(userId);
-//
-//            if (userOpt.isPresent()) {
-//                User user = userOpt.get();
-//
-//                // Verify current password
-//                if (PasswordUtils.checkPassword(currentPassword, user.getPassword())) {
-//                    // Hash and set new password
-//                    String hashedNewPassword = PasswordUtils.hashPassword(newPassword);
-//                    user.setPassword(hashedNewPassword);
-//                    user.setUpdatedAt(LocalDateTime.now());
-//
-//                    // Update user in database
-//                    return userDAO.update(user);
-//                }
-//            }
-//
-//            return false;
-//        } catch (SQLException e) {
-//            System.err.println("Database error during password change: " + e.getMessage());
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
-
-//    public boolean updateProfile(User user) {
-//        try {
-//            user.setUpdatedAt(LocalDateTime.now());
-//            return userDAO.update(user);
-//        } catch (SQLException e) {
-//            System.err.println("Database error during profile update: " + e.getMessage());
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
 }

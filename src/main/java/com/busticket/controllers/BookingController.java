@@ -5,9 +5,8 @@ import com.busticket.models.User;
 import com.busticket.services.BookingService;
 import com.busticket.services.ScheduleService;
 import com.busticket.utils.SceneManager;
-import com.fasterxml.jackson.databind.introspect.Annotated;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
+
+import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.collections.FXCollections;
@@ -43,19 +42,15 @@ public class BookingController {
     @FXML
     private TableColumn<Booking, BigDecimal> fareColumn;
 
-    private BookingService bookingService;
     private ScheduleService scheduleService;
 
     @FXML
     public void initialize() {
         User loggedInUser = (User) SceneManager.getSessionData("loggedInUser");
-//        String username = (String) SceneManager.getSessionData("username");
-//        String userRole = (String) SceneManager.getSessionData("userRole");
 
         // Use the session data as needed
         if (loggedInUser != null) {
             // Update UI or perform role-based actions
-            bookingService = new BookingService();
             scheduleService = new ScheduleService();
             setupComboBoxes();
             setupTable();
@@ -131,28 +126,8 @@ public class BookingController {
             showAlert("Please select a schedule first");
             return;
         }
-//        System.out.println("Selected booking: " + selectedBooking);
-//        System.out.println("Selected bus name: " + busNameColumn.getCellData(selectedBooking));
-//        System.out.println("Selected date: " + travelDate.getValue());
-//        System.out.println("Selected bus type: " + busType.getValue());
-//        System.out.println("Selected fare: " + fareColumn.getCellData(selectedBooking));
-//        System.out.println("Selected departure time: " + departureColumn.getCellData(selectedBooking));
-//        System.out.println("Selected arrival time: " + arrivalColumn.getCellData(selectedBooking));
-//        System.out.println("Selected bus type: " + typeColumn.getCellData(selectedBooking));
-//        System.out.println("Selected departure location: " + fromLocation.getValue());
-//        System.out.println("Selected arrival location: " + toLocation.getValue());
-//        System.out.println("User ID: " + SceneManager.getSessionData("userID") + "\n");
-//        System.out.println("User role: " + SceneManager.getSessionData("role") + "\n");
-//        System.out.println("User email: " + SceneManager.getSessionData("email") + "\n");
-//        System.out.println("User name: " + SceneManager.getSessionData("name") + "\n");
         System.out.println("Selected schedule ID: " + scheduleColumn.getCellData(selectedBooking) + "\n");
-//
-//        // Navigate to seat selection view
-//        SceneManager.setSessionData("fare", fareColumn.getCellData(selectedBooking));
-//        SceneManager.setSessionData("userId", SceneManager.getSessionData("userID"));
-//        SceneManager.setSessionData("role", SceneManager.getSessionData("role"));
-//        SceneManager.setSessionData("email", SceneManager.getSessionData("email"));
-//        SceneManager.setSessionData("name", SceneManager.getSessionData("name"));
+
         SceneManager.setSessionData("selectedSchedule", scheduleColumn.getCellData(selectedBooking));
         SceneManager.setSessionData("selectedBus", busNameColumn.getCellData(selectedBooking));
         SceneManager.setSessionData("selectedDate", travelDate.getValue().toString());

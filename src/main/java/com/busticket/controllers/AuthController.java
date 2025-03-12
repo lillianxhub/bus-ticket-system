@@ -50,7 +50,6 @@ public class AuthController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // No need to show/hide panes here as each FXML file has its own pane
     }
 
     @FXML
@@ -111,11 +110,9 @@ public class AuthController implements Initializable {
                 SceneManager.setSessionData("username", user.getUsername());
                 SceneManager.setSessionData("userRole", user.getRole());
 
-                if (User.UserRole.ADMIN == user.getRole()) {
-                   SceneManager.switchScene("/fxml/admin_dashboard.fxml");
-                } else {
-                   SceneManager.switchScene("/fxml/booking.fxml");
-                }
+
+                SceneManager.switchScene("/fxml/booking.fxml");
+
             } else {
                 AlertHelper.showErrorAlert("Login Failed", "Invalid username or password.");
             }

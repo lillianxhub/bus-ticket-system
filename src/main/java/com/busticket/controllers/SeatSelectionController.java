@@ -9,6 +9,7 @@ import com.busticket.models.Booking;
 import com.busticket.models.Schedule;
 import com.busticket.models.User;
 import com.busticket.services.BookingService;
+import com.busticket.services.SeatService;
 import com.busticket.utils.SceneManager;
 import com.busticket.utils.AlertHelper;
 
@@ -56,6 +57,7 @@ public class SeatSelectionController {
     private BookingService bookingService;
     private SeatDAO seatDAO;
     private AlertHelper alertHelper;
+    private SeatService seatService;
 
     private final ObservableList<String> selectedSeats = FXCollections.observableArrayList();
     private final Set<String> selectedSeatsSet = new HashSet<>();
@@ -66,6 +68,7 @@ public class SeatSelectionController {
         this.bookingService = new BookingService();
         this.seatDAO = new SeatDAO();
         this.alertHelper = new AlertHelper();
+        this.seatService = new SeatService();
     }
 
     @FXML
@@ -142,7 +145,7 @@ public class SeatSelectionController {
                 String seatCode = seatButton.getText();
 
                 try {
-                    int seatID = convertseatCodeToID(seatCode);
+                    int seatID = seatService.getSeatCodeByID(seatCode);
                     boolean isAvailable = seatDAO.isSeatAvailable(scheduleID, seatID, travelDate);
 
                     if (!isAvailable) {
@@ -200,7 +203,7 @@ public class SeatSelectionController {
             Map<String, Integer> seatCodeToIdMap = new HashMap<>(); // Store mapping of seat numbers to IDs
             for (String seatCode : selectedSeatsSet) {
                 try {
-                    int seatID = convertseatCodeToID(seatCode);
+                    int seatID = seatService.getSeatCodeByID(seatCode);
                     seatCodeToIdMap.put(seatCode, seatID);
                 } catch (SQLException e) {
                     alertHelper.showErrorAlert("Error", "Invalid seat number: " + seatCode);
@@ -276,22 +279,6 @@ public class SeatSelectionController {
             }
         }
     }
-
-    private int convertseatCodeToID(String seatCode) throws SQLException {
-        String sql = "SELECT seatID FROM seats WHERE seatCode = ?";
-        try (PreparedStatement stmt = DatabaseConnection.getConnection().prepareStatement(sql)) {
-            stmt.setString(1, seatCode);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("seatID");
-                } else {
-                    throw new SQLException("Invalid seat number: " + seatCode);
-                }
-            }
-        }
-    }
-
-
 
     @FXML
     public void HandleSelect(MouseEvent mouseEvent) {

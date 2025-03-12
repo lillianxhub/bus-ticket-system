@@ -39,14 +39,6 @@ public class Schedule {
         this.scheduleId = scheduleId;
     }
 
-    public Integer getBusId() {
-        return busId;
-    }
-
-    public void setBusId(Integer busId) {
-        this.busId = busId;
-    }
-
     public String getOrigin() {
         return origin;
     }

@@ -13,71 +13,76 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.busticket.controllers.TicketViewController">
-    <VBox alignment="TOP_CENTER" maxWidth="220.0" spacing="15" styleClass="ticket-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+<AnchorPane fx:id="ticketPane" prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.busticket.controllers.TicketViewController">
+    <VBox alignment="TOP_CENTER" maxWidth="220.0" spacing="15" styleClass="ticket-container" AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
         <padding>
-            <Insets bottom="20" left="20" right="20" top="20" />
+            <Insets bottom="20" left="20" right="20" top="20"/>
         </padding>
 
         <Text styleClass="ticket-header" text="Bus Ticket" wrappingWidth="107.091796875">
-         <font>
-            <Font size="24.0" />
-         </font>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin></Text>
+            <font>
+                <Font size="24.0"/>
+            </font>
+            <VBox.margin>
+                <Insets/>
+            </VBox.margin>
+        </Text>
 
-        <Separator />
+        <Separator/>
 
         <GridPane hgap="10" prefWidth="220.0" vgap="10">
-            <Label text="Booking ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-            <Label fx:id="bookingIdLabel" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <Label text="Booking ID:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <Label fx:id="bookingIdLabel" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
-            <Label text="Passenger:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-            <Label fx:id="passengerLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="Passenger:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <Label fx:id="passengerLabel" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
-            <Label text="From:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-            <Label fx:id="fromLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="From:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <Label fx:id="fromLabel" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-            <Label text="To:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-            <Label fx:id="toLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="To:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <Label fx:id="toLabel" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
-            <Label text="Date:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-            <Label fx:id="dateLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label text="Date:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+            <Label fx:id="dateLabel" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
-            <Label text="Bus:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-            <Label fx:id="busLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label text="Bus:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+            <Label fx:id="busLabel" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
-            <Label text="Seat No:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-            <Label fx:id="seatLabel" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Label text="Seat No:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+            <Label fx:id="seatLabel" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
 
-            <Label text="Amount:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
-            <Label fx:id="amountLabel" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-         <columnConstraints>
-            <ColumnConstraints />
-            <ColumnConstraints />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-         </rowConstraints>
+            <Label text="Amount:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+            <Label fx:id="amountLabel" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+            <columnConstraints>
+                <ColumnConstraints/>
+                <ColumnConstraints/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints/>
+                <RowConstraints/>
+                <RowConstraints/>
+                <RowConstraints/>
+                <RowConstraints/>
+                <RowConstraints/>
+                <RowConstraints/>
+                <RowConstraints/>
+            </rowConstraints>
         </GridPane>
 
-        <Separator />
+        <Separator/>
 
         <HBox alignment="CENTER" spacing="10">
-            <Button onAction="#handleBack" style="-fx-background-color: #000000;" text="Back to book page" textFill="WHITE">
-            <HBox.margin>
-               <Insets top="60.0" />
-            </HBox.margin></Button>
-<!--            <Button text="Download PDF" onAction="#handleDownload"/>-->
-<!--            <Button text="Print" onAction="#handlePrint"/>-->
+            <Button onAction="#handleBack" style="-fx-background-color: #000000;" text="Back to book page"
+                    textFill="WHITE">
+                <HBox.margin>
+                    <Insets top="60.0"/>
+                </HBox.margin>
+            </Button>
+            <!--            <Button text="Download PDF" onAction="#handleDownload"/>-->
+            <!--            <Button text="Print" onAction="#handlePrint"/>-->
         </HBox>
     </VBox>
 </AnchorPane>
