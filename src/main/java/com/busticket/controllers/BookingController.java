@@ -3,6 +3,7 @@ package com.busticket.controllers;
 import com.busticket.models.Booking;
 import com.busticket.models.User;
 import com.busticket.services.BookingService;
+import com.busticket.services.ScheduleService;
 import com.busticket.utils.SceneManager;
 import com.fasterxml.jackson.databind.introspect.Annotated;
 import javafx.beans.property.SimpleObjectProperty;
@@ -43,6 +44,7 @@ public class BookingController {
     private TableColumn<Booking, BigDecimal> fareColumn;
 
     private BookingService bookingService;
+    private ScheduleService scheduleService;
 
     @FXML
     public void initialize() {
@@ -54,6 +56,7 @@ public class BookingController {
         if (loggedInUser != null) {
             // Update UI or perform role-based actions
             bookingService = new BookingService();
+            scheduleService = new ScheduleService();
             setupComboBoxes();
             setupTable();
             System.out.println("Booking pane initialized");
@@ -64,7 +67,7 @@ public class BookingController {
 
     private void setupComboBoxes() {
         // Populate locations and bus types
-        ObservableList<String> locations = FXCollections.observableArrayList(bookingService.getAllLocations());
+        ObservableList<String> locations = FXCollections.observableArrayList(scheduleService.getAllLocations());
         fromLocation.setItems(locations);
         toLocation.setItems(locations);
 
@@ -112,7 +115,7 @@ public class BookingController {
 
         try {
             ObservableList<Booking> schedules = FXCollections.observableArrayList(
-                    bookingService.searchAvailableSchedules(from, to, date, type)
+                    scheduleService.searchAvailableSchedules(from, to, date, type)
             );
             busScheduleTable.setItems(schedules);
         } catch (RuntimeException e) {

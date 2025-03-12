@@ -4,12 +4,14 @@ import java.sql.*;
 
 import com.busticket.config.DatabaseConnection;
 
-import com.busticket.dao.BookingDAO;
 import com.busticket.dao.SeatDAO;
 import com.busticket.models.Booking;
 import com.busticket.models.Schedule;
 import com.busticket.models.User;
+import com.busticket.services.BookingService;
 import com.busticket.utils.SceneManager;
+import com.busticket.utils.AlertHelper;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -50,16 +52,20 @@ public class SeatSelectionController {
     @FXML
     private Label totalAmountLabel;
 
-    private BookingDAO bookingDAO;
+//    private BookingDAO bookingDAO;
+    private BookingService bookingService;
     private SeatDAO seatDAO;
+    private AlertHelper alertHelper;
 
     private final ObservableList<String> selectedSeats = FXCollections.observableArrayList();
     private final Set<String> selectedSeatsSet = new HashSet<>();
 
 
     public SeatSelectionController() {
-        this.bookingDAO = new BookingDAO();
+//        this.bookingDAO = new BookingDAO();
+        this.bookingService = new BookingService();
         this.seatDAO = new SeatDAO();
+        this.alertHelper = new AlertHelper();
     }
 
     @FXML
@@ -108,7 +114,7 @@ public class SeatSelectionController {
 
             // Validate required data
             if (selectedSchedule == null || busName == null || dateStr == null || loggedInUser == null) {
-                showAlert("Error", "Missing required booking information. Please try again.");
+                alertHelper.showErrorAlert("Error", "Missing required booking information. Please try again.");
                 handleBack(null);
                 return;
             }
@@ -119,7 +125,7 @@ public class SeatSelectionController {
 
         } catch (Exception e) {
             System.err.println("Error initializing seat selection: " + e.getMessage());
-            showAlert("Error", "Failed to initialize seat selection. Please try again.");
+            alertHelper.showErrorAlert("Error", "Failed to initialize seat selection. Please try again.");
             handleBack(null);
         }
     }
@@ -167,7 +173,7 @@ public class SeatSelectionController {
     @FXML
     public void handleSubmit(ActionEvent actionEvent) {
         if (selectedSeatsSet.isEmpty()) {
-            showAlert("Error", "Please select at least one seat.");
+            alertHelper.showErrorAlert("Error", "Please select at least one seat.");
             return;
         } else {
             System.out.println("selectedSeatsSet: " + selectedSeatsSet + "\nselectedSeats: " + selectedSeats);
@@ -186,7 +192,7 @@ public class SeatSelectionController {
 
             // Validate required data
             if (userID == null || scheduleID == null || dateStr == null || farePerSeat == null) {
-                showAlert("Error", "Missing required booking information.");
+                alertHelper.showErrorAlert("Error", "Missing required booking information.");
                 return;
             }
 
@@ -197,7 +203,7 @@ public class SeatSelectionController {
                     int seatID = convertseatCodeToID(seatCode);
                     seatCodeToIdMap.put(seatCode, seatID);
                 } catch (SQLException e) {
-                    showAlert("Error", "Invalid seat number: " + seatCode);
+                    alertHelper.showErrorAlert("Error", "Invalid seat number: " + seatCode);
                     return;
                 }
             }
@@ -214,13 +220,13 @@ public class SeatSelectionController {
             // Check seat availability
             for (Map.Entry<String, Integer> entry : seatCodeToIdMap.entrySet()) {
                 if (!seatDAO.isSeatAvailable(scheduleID, entry.getValue(), travelDate.toLocalDate())) {
-                    showAlert("Error", "Seat " + entry.getKey() + " is already booked. Please select different seats.");
+                    alertHelper.showErrorAlert("Error", "Seat " + entry.getKey() + " is already booked. Please select different seats.");
                     return;
                 }
             }
 
             // Create bookings
-            Set<Integer> bookingIds = new HashSet<>();
+            Set<Booking> bookingIds = new HashSet<>();
             for (Map.Entry<String, Integer> entry : seatCodeToIdMap.entrySet()) {
                 Schedule schedule = new Schedule();
                 schedule.setScheduleId(scheduleID);
@@ -233,7 +239,7 @@ public class SeatSelectionController {
                 booking.setTotalFare(totalFare);
                 booking.setStatus("PENDING");
 
-                int bookingId = bookingDAO.createBooking(booking);
+                Booking bookingId = bookingService.createBooking(booking);
                 bookingIds.add(bookingId);
             }
 
@@ -257,7 +263,7 @@ public class SeatSelectionController {
                     System.err.println("Error rolling back transaction: " + ex.getMessage());
                 }
             }
-            showAlert("Error", "Failed to create booking: " + e.getMessage());
+            alertHelper.showErrorAlert("Error", "Failed to create booking: " + e.getMessage());
             e.printStackTrace();
         } finally {
             // Restore original auto-commit setting
@@ -269,15 +275,6 @@ public class SeatSelectionController {
                 }
             }
         }
-    }
-
-
-
-    private void showAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setContentText(content);
-        alert.showAndWait();
     }
 
     private int convertseatCodeToID(String seatCode) throws SQLException {

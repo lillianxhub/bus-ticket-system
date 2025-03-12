@@ -4,6 +4,7 @@ import com.busticket.dao.BookingDAO;
 import com.busticket.models.Booking;
 import com.busticket.models.Schedule;
 import com.busticket.models.User;
+import com.busticket.services.BookingService;
 import com.busticket.utils.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -31,29 +32,29 @@ public class TicketViewController {
     @FXML
     private Label amountLabel;
 
-    private BookingDAO bookingDAO;
+//    private BookingDAO bookingDAO;
+    private BookingService bookingService;
 
     public TicketViewController() {
-        this.bookingDAO = new BookingDAO();
+        this.bookingService = new BookingService();
+//        this.bookingDAO = new BookingDAO();
     }
 
     @FXML
     public void initialize() {
         try {
-            // Retrieve booking IDs and selected seats from session using correct key "bookingIds"
-            Object bookingIdsObj = SceneManager.getSessionData("bookingIds");  // Changed from "bookingId" to "bookingIds"
+            Object bookingIdsObj = SceneManager.getSessionData("bookingIds");
             Object selectedSeatsObj = SceneManager.getSessionData("selectedSeats");
             Object userObj = SceneManager.getSessionData("loggedInUser");
-
             BigDecimal farePerSeat = (BigDecimal) SceneManager.getSessionData("fare");
 
             // Proper type checking and casting
-            Set<Integer> bookingIds = null;
+            Set<Booking> bookings = null;
             Set<String> selectedSeats = null;
             User loggedInUser = null;
 
             if (bookingIdsObj instanceof Set<?>) {
-                bookingIds = (Set<Integer>) bookingIdsObj;
+                bookings = (Set<Booking>) bookingIdsObj;
             }
             if (selectedSeatsObj instanceof Set<?>) {
                 selectedSeats = (Set<String>) selectedSeatsObj;
@@ -62,10 +63,8 @@ public class TicketViewController {
                 loggedInUser = (User) userObj;
             }
 
-            System.out.println("Booking IDs: " + bookingIds + "\nSelected seats: " + selectedSeats + "\nUser: " + loggedInUser);
-
-            if (bookingIds == null || bookingIds.isEmpty()) {
-                showError("No booking IDs found");
+            if (bookings == null || bookings.isEmpty()) {
+                showError("No booking information found");
                 return;
             }
 
@@ -79,14 +78,8 @@ public class TicketViewController {
                 return;
             }
 
-            // Get the first booking ID (assuming all bookings are related)
-            Integer firstBookingId = bookingIds.iterator().next();
-            Booking booking = bookingDAO.findById(firstBookingId);
-
-            if (booking == null) {
-                showError("Booking not found");
-                return;
-            }
+            // Get the first booking (assuming all bookings are related)
+            Booking booking = bookings.iterator().next();
 
             // Format the booking details
             Schedule schedule = booking.getSchedule();
@@ -95,7 +88,7 @@ public class TicketViewController {
 
             // Populate the labels
             bookingIdLabel.setText(String.join(", ",
-                    bookingIds.stream().map(String::valueOf).toList()));
+                    bookings.stream().map(b -> String.valueOf(b.getBookingId())).toList()));
             passengerLabel.setText(loggedInUser.getFullName());
             fromLabel.setText(schedule.getOrigin());
             toLabel.setText(schedule.getDestination());
@@ -104,11 +97,6 @@ public class TicketViewController {
                     booking.getBus().getBusType().toString() + ")");
             seatLabel.setText(String.join(", ", selectedSeats));
             amountLabel.setText(String.format("%.2f", totalFare));
-            System.out.println("Amount Fare: " + totalFare);
-
-        } catch (SQLException e) {
-            showError("Error loading booking details: " + e.getMessage());
-            e.printStackTrace();
         } catch (ClassCastException e) {
             showError("Error processing session data: " + e.getMessage());
             e.printStackTrace();
