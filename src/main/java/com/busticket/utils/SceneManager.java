@@ -17,7 +17,6 @@ public class SceneManager {
     private static final Map<String, Object> sessionData = new HashMap<>();
 
     private SceneManager() {
-//         Private constructor to prevent instantiation
     }
 
     public static void initialize(Stage stage) {
@@ -45,11 +44,6 @@ public class SceneManager {
 
             Parent root = loader.load();
             Scene scene = new Scene(root);
-//            URL cssUrl = SceneManager.class.getResource("/css/application.css");
-//            if (cssUrl != null) {
-//                scene.getStylesheets().add(cssUrl.toExternalForm());
-//            }
-
 
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -69,12 +63,6 @@ public class SceneManager {
             FXMLLoader loader = new FXMLLoader(location);
             Parent root = loader.load();
             Scene scene = new Scene(root);
-
-            // Add CSS if needed
-//            URL cssLocation = SceneManager.class.getResource("/css/styles.css");
-//            if (cssLocation != null) {
-//                scene.getStylesheets().add(cssLocation.toExternalForm());
-//            }
 
             Stage stage = event != null ?
                     (Stage) ((Node) event.getSource()).getScene().getWindow() :

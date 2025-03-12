@@ -11,6 +11,16 @@ import java.util.Optional;
 
 public class UserDAO {
 
+    private Connection connection;
+
+    public UserDAO() {
+        try {
+            this.connection = DatabaseConnection.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public boolean save(User user) throws SQLException {
         if (user.getRole() == null) {
             user.setRole(User.UserRole.CUSTOMER);
@@ -18,8 +28,7 @@ public class UserDAO {
         String sql = "INSERT INTO users (username, password, email, fullName, address, phone, createdAt, active, role) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setString(1, user.getUsername());
             pstmt.setString(2, user.getPassword());
@@ -49,8 +58,7 @@ public class UserDAO {
         String sql = "UPDATE users SET username = ?, password = ?, email = ?, full_name = ?, " +
                 "phone = ?, address = ?, user_type = ?, updated_at = ?, active = ? WHERE id = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 
             pstmt.setString(1, user.getUsername());
             pstmt.setString(2, user.getPassword());
@@ -71,8 +79,7 @@ public class UserDAO {
     public boolean delete(int id) throws SQLException {
         String sql = "DELETE FROM users WHERE id = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 
             pstmt.setInt(1, id);
             int affectedRows = pstmt.executeUpdate();
@@ -83,8 +90,7 @@ public class UserDAO {
     public Optional<User> findById(int id) throws SQLException {
         String sql = "SELECT * FROM users WHERE id = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 
             pstmt.setInt(1, id);
 
@@ -100,8 +106,7 @@ public class UserDAO {
     public Optional<User> findByUsername(String username) throws SQLException {
         String sql = "SELECT * FROM users WHERE username = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 
             pstmt.setString(1, username);
 //            pstmt.setString(2, password);
@@ -118,8 +123,7 @@ public class UserDAO {
     public Optional<User> findByEmail(String email) throws SQLException {
         String sql = "SELECT * FROM users WHERE email = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 
             pstmt.setString(1, email);
 
@@ -136,8 +140,7 @@ public class UserDAO {
         String sql = "SELECT * FROM users";
         List<User> users = new ArrayList<>();
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             Statement stmt = conn.createStatement();
+        try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
@@ -152,8 +155,7 @@ public class UserDAO {
         String sql = "SELECT * FROM users WHERE user_type = ?";
         List<User> users = new ArrayList<>();
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 
             pstmt.setString(1, userType);
 
@@ -170,8 +172,7 @@ public class UserDAO {
     public boolean isUsernameExists(String username) throws SQLException {
         String sql = "SELECT COUNT(*) FROM users WHERE username = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 
             pstmt.setString(1, username);
 
@@ -187,8 +188,7 @@ public class UserDAO {
     public boolean isEmailExists(String email) throws SQLException {
         String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 
             pstmt.setString(1, email);
 

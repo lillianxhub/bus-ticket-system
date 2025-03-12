@@ -97,15 +97,6 @@ public class Booking {
         this.schedule = schedule;
     }
 
-    // New getter and setter for bookedSeats
-    public int getBookedSeats() {
-        return bookedSeats;
-    }
-
-    public void setBookedSeats(int bookedSeats) {
-        this.bookedSeats = bookedSeats;
-    }
-
     public String getStatus() {
         return status;
     }
