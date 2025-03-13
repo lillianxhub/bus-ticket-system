@@ -214,36 +214,94 @@ package "com.busticket.services" #SERVICE_COLOR {
 }
 
 package "com.busticket.controllers" #CONTROLLER_COLOR {
-    class AuthController {
-        - userDAO: UserDAO
-        + initialize(stage: Stage): void
-        + login(username: String, password: String): User
-        + register(user: User): boolean
+    class AuthController implements Initializable {
+        - loginPane: AnchorPane
+        - registerPane: AnchorPane
+        - loginUsername: TextField
+        - loginPassword: PasswordField
+        - loginButton: Button
+        - registerLink: Hyperlink
+        - regUsername: TextField
+        - regPassword: PasswordField
+        - regConfirmPassword: PasswordField
+        - regEmail: TextField
+        - regFullName: TextField
+        - regPhone: TextField
+        - regAddress: TextArea
+        - registerButton: Button
+        - loginLink: Hyperlink
+        - authService: AuthService
+
+        + AuthController()
+        + initialize(url: URL, resourceBundle: ResourceBundle): void
+        + showLoginForm(): void
+        + showRegisterForm(): void
+        - handleLogin(event: ActionEvent): void
+        - handleRegister(event: ActionEvent): void
     }
 
     class BookingController {
-        - bookingDAO: BookingDAO
-        - scheduleDAO: ScheduleDAO
-        - seatDAO: SeatDAO
-        + createBooking(booking: Booking): Booking
-        + searchSchedules(from: String, to: String, date: LocalDate): List<Schedule>
+        - bookingPane: AnchorPane
+        - fromLocation: ComboBox<String>
+        - toLocation: ComboBox<String>
+        - travelDate: DatePicker
+        - busType: ComboBox<String>
+        - busScheduleTable: TableView<Booking>
+        - scheduleColumn: TableColumn<Booking, Integer>
+        - busNameColumn: TableColumn<Booking, String>
+        - departureColumn: TableColumn<Booking, String>
+        - arrivalColumn: TableColumn<Booking, String>
+        - typeColumn: TableColumn<Booking, String>
+        - fareColumn: TableColumn<Booking, BigDecimal>
+        - scheduleService: ScheduleService
+
+        + initialize(): void
+        - setupComboBoxes(): void
+        - setupTable(): void
+        - handleSearch(): void
+        - handleSeatSelection(): void
+        - handleBack(): void
+        + getBookingPane(): AnchorPane
+        + setBookingPane(bookingPane: AnchorPane): void
     }
 
     class SeatSelectionController {
-        - seatDAO: SeatDAO
-        - scheduleDAO: ScheduleDAO
-        + initialize(location: URL, resources: ResourceBundle): void
-        + selectSeat(seatCode: String): boolean
-        + confirmSeatSelection(): void
+        - SeatSelectionPane: AnchorPane
+        - seatingGrid: GridPane
+        - busNameLabel: Label
+        - dateLabel: Label
+        - selectedSeatsListView: ListView<String>
+        - totalAmountLabel: Label
+        - bookingService: BookingService
+        - seatService: SeatService
+        - selectedSeats: ObservableList<String>
+        - selectedSeatsSet: Set<String>
+
+        + SeatSelectionController()
+        + initialize(): void
+        - updateSeatAvailability(scheduleID: Integer, travelDate: LocalDate): void
+        + handleBack(actionEvent: ActionEvent): void
+        + handleSubmit(actionEvent: ActionEvent): void
+        + HandleSelect(mouseEvent: MouseEvent): void
     }
 
     class TicketViewController {
-        - bookingDAO: BookingDAO
-        + initialize(location: URL, resources: ResourceBundle): void
-        + displayTicket(bookingId: Integer): void
-        + printTicket(): void
+        - bookingIdLabel: Label
+        - passengerLabel: Label
+        - fromLabel: Label
+        - toLabel: Label
+        - dateLabel: Label
+        - busLabel: Label
+        - seatLabel: Label
+        - amountLabel: Label
+        - alertHelper: AlertHelper
+
+        + TicketViewController()
+        + initialize(): void
+        + handleBack(): void
     }
 }
+
 
 package "com.busticket.utils" #UTILS_COLOR {
     class AlertHelper {
@@ -253,7 +311,13 @@ package "com.busticket.utils" #UTILS_COLOR {
     }
 
     class SceneManager {
-        + {static} switchScene(String fxmlPath, Object controller): void
+        - {static} primaryStage : Stage
+        - {static} sessionData : Map<String, Object>
+
+        - SceneManager()
+        + {static} switchScene(String : fxmlPath, Object : controller): void
+        + {static} setSessionData(String : key, Object : value) : void
+        + {static} getSessionData(String : key) : Object
     }
 
     class ValidationUtils {
@@ -301,6 +365,18 @@ BookingController --> "1" ScheduleService: uses
 BookingController --> "1" SeatService: uses
 SeatSelectionController --> "1" SeatService: uses
 TicketViewController --> "1" BookingService: uses
+
+' Controller to Utilities relationships
+AuthController --> ValidationUtils: uses
+AuthController --> AlertHelper: uses
+AuthController --> SceneManager: uses
+BookingController --> AlertHelper: uses
+BookingController --> SceneManager: uses
+SeatSelectionController --> AlertHelper: uses
+SeatSelectionController --> SceneManager: uses
+TicketViewController --> AlertHelper: uses
+TicketViewController --> SceneManager: uses
+
 
 ' Service to Utilities
 BookingService --> ValidationUtils: uses
