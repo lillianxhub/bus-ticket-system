@@ -110,8 +110,11 @@ public class AuthController implements Initializable {
                 SceneManager.setSessionData("username", user.getUsername());
                 SceneManager.setSessionData("userRole", user.getRole());
 
-
-                SceneManager.switchScene("/fxml/booking.fxml");
+                if (user.getRole() == User.UserRole.ADMIN) {
+                    SceneManager.switchScene("/fxml/admin_dashboard.fxml");
+                } else {
+                    SceneManager.switchScene("/fxml/booking.fxml");
+                }
 
             } else {
                 AlertHelper.showErrorAlert("Login Failed", "Invalid username or password.");

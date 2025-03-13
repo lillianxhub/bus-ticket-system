@@ -59,7 +59,7 @@ public class SeatDAO {
     }
 
 
-    public boolean isSeatAvailable(int scheduleId, int seatId, LocalDate travelDate) throws SQLException {
+    public boolean checkSeat(int scheduleId, int seatId, LocalDate travelDate) throws SQLException {
         String sql = "SELECT COUNT(*) FROM bookings WHERE scheduleID = ? AND seatID = ? AND travelDate = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {

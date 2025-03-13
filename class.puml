@@ -1,50 +1,38 @@
-@startuml
+@startuml Bus Ticket Reservation System
 
-package com.busticket.dao {
-    class BookingDAO {
-        - connection : Connection
-        + BookingDAO() : BookingDAO
-        + createBooking(Booking booking) : Booking
-        + findById(Integer bookingId) : Booking
-        + findByUserId(Integer userId) : List<Booking>
-        - mapResultSetToBooking(ResultSet rs) : Booking
-    }
-
-    class UserDAO {
-        - connection : Connection
-        + UserDAO() : UserDAO
-        + save(user : User) : boolean
-        + update(user : User) : boolean
-        + delete(id : int) : boolean
-        + findById(id : int) : Optional<User>
-        + findByUsername(username : String) : Optional<User>
-        + findByEmail(email : String) : Optional<User>
-        + findAll() : List<User>
-        + findByUserType(userType : String) : List<User>
-        + isUsernameExists(username : String) : boolean
-        + isEmailExists(email : String) : boolean
-        - mapResultSetToUser(rs : ResultSet) : User
-    }
-
-    class ScheduleDAO {
-        - connection : Connection
-        + ScheduleDAO() : ScheduleDAO
-        + searchSchedules(String from, String to, LocalDate date, String busType) : List<Booking>
-        + getLocations() : List<String>
-        - mapResultSetToSchedule(ResultSet rs) : Booking
-    }
-
-    class SeatDAO {
-        - connection : Connection
-        + SeatDAO() : SeatDAO
-        + findBySeatId(int seatId) : int
-        + findBySeatCode(String seatCode) : String
-        + getSeatIdByCode(String seatCode) : int
-        + isSeatAvailable(int scheduleId, int seatId, LocalDate travelDate) : boolean
-    }
+skinparam {
+  backgroundColor white
+  handwritten false
+  monochrome false
+  classAttributeIconSize 0
+  linetype ortho
 }
 
-package com.busticket.models {
+!define PRIMARY_COLOR 3498DB
+!define SECONDARY_COLOR 2ECC71
+!define DATABASE_COLOR F1C40F
+!define CONTROLLER_COLOR 9B59B6
+!define UTILS_COLOR E74C3C
+!define SERVICE_COLOR E67E22
+
+package "com.busticket.config" {
+    class DatabaseConnection <<Singleton>> #DATABASE_COLOR {
+        - {static} JDBC_URL : String
+        - {static} USERNAME : String
+        - {static} PASSWORD : String
+        - {static} connection : Connection
+
+        - DatabaseConnection()
+        + {static} getConnection() : Connection
+        + {static} closeConnection() : void
+    }
+
+    note top of DatabaseConnection
+        Singleton pattern for database connection management
+    end note
+}
+
+package "com.busticket.models" #PRIMARY_COLOR {
     class Booking {
         - bookingId: Integer
         - userId: Integer
@@ -60,24 +48,9 @@ package com.busticket.models {
 
         + Booking()
         + Booking(userId: Integer, scheduleId: Integer, seatId: Integer, travelDate: LocalDate, totalFare: BigDecimal)
+        .. getters/setters ..
         + getBookingId(): Integer
         + setBookingId(bookingId: Integer): void
-        + getUserId(): Integer
-        + setUserId(userId: Integer): void
-        + getSeatId(): Integer
-        + setSeatId(seatId: Integer): void
-        + getTravelDate(): LocalDate
-        + setTravelDate(travelDate: LocalDate): void
-        + getBookingDate(): LocalDateTime
-        + setBookingDate(bookingDate: LocalDateTime): void
-        + getTotalFare(): BigDecimal
-        + setTotalFare(totalFare: BigDecimal): void
-        + getBus(): Bus
-        + setBus(bus: Bus): void
-        + getSchedule(): Schedule
-        + setSchedule(schedule: Schedule): void
-        + getStatus(): String
-        + setStatus(status: String): void
         + toString(): String
     }
 
@@ -88,12 +61,7 @@ package com.busticket.models {
 
         + Bus()
         + Bus(busId: Integer, busName: String, busType: BusType)
-        + getBusId(): Integer
-        + setBusId(busId: Integer): void
-        + getBusName(): String
-        + setBusName(busName: String): void
-        + getBusType(): BusType
-        + setBusType(busType: BusType): void
+        .. getters/setters ..
         + toString(): String
     }
 
@@ -112,69 +80,23 @@ package com.busticket.models {
         - fare: BigDecimal
 
         + Schedule()
-        + Schedule(scheduleId: Integer, busId: Integer, origin: String, destination: String,
-                   departureTime: LocalTime, arrivalTime: LocalTime, fare: BigDecimal)
-        + getScheduleId(): Integer
-        + setScheduleId(scheduleId: Integer): void
-        + getOrigin(): String
-        + setOrigin(origin: String): void
-        + getDestination(): String
-        + setDestination(destination: String): void
-        + getDepartureTime(): LocalTime
-        + setDepartureTime(departureTime: LocalTime): void
-        + getArrivalTime(): LocalTime
-        + setArrivalTime(arrivalTime: LocalTime): void
-        + getFare(): BigDecimal
-        + setFare(fare: BigDecimal): void
-        + toString(): String
-    }
-
-    class Seat {
-        - seatId: Integer
-        - seatCode: String
-
-        + Seat()
-        + Seat(seatId: Integer, seatCode: String)
-        + getSeatId(): Integer
-        + setSeatId(seatId: Integer): void
-        + getSeatCode(): String
-        + setSeatCode(seatCode: String): void
-        + toString(): String
+        .. getters/setters ..
     }
 
     class User {
-        - id: int
+        - userId: Integer
         - username: String
         - password: String
         - email: String
         - fullName: String
-        - address: String
         - phone: String
+        - address: String
         - role: UserRole
         - createdAt: LocalDateTime
         - active: boolean
 
         + User()
-        + getId(): int
-        + setId(id: int): void
-        + getUsername(): String
-        + setUsername(username: String): void
-        + getPassword(): String
-        + setPassword(password: String): void
-        + getEmail(): String
-        + setEmail(email: String): void
-        + getFullName(): String
-        + setFullName(fullName: String): void
-        + getAddress(): String
-        + setAddress(address: String): void
-        + getPhone(): String
-        + setPhone(phone: String): void
-        + getRole(): UserRole
-        + setRole(role: UserRole): void
-        + getCreatedAt(): LocalDateTime
-        + setCreatedAt(createdAt: LocalDateTime): void
-        + isActive(): boolean
-        + setActive(active: boolean): void
+        .. getters/setters ..
     }
 
     enum UserRole {
@@ -182,240 +104,221 @@ package com.busticket.models {
         CUSTOMER
     }
 
-}
+    class Seat {
+        - seatId: Integer
+        - seatCode: String
+        - busId: Integer
+        - seatType: String
+        - isAvailable: boolean
 
-package com.busticket.utils {
-    class AlertHelper {
-        + showErrorAlert(title: String, content: String): void
-        + showInformationAlert(title: String, content: String): void
-        + showWarningAlert(title: String, content: String): void
-        + showConfirmation(title: String, content: String): boolean
-        + showCustomConfirmation(title: String, content: String, buttonTypes: ButtonType...): Optional<ButtonType>
-        + showSuccessAlert(title: String, content: String): void
-        + showExceptionAlert(title: String, content: String, exception: Exception): void
-        - configureAlert(alert: Alert, title: String, content: String): void
-    }
-
-    class SceneManager {
-        - primaryStage: Stage
-        - sessionData: Map<String, Object>
-
-        + initialize(stage: Stage): void
-        + switchScene(fxmlPath: String): void
-        + switchScene(fxmlPath: String, controller: Object): void
-        + loadScene(fxmlPath: String, event: ActionEvent): void
-        + setSessionData(key: String, value: Object): void
-        + getSessionData(key: String): Object
-        + removeSessionData(key: String): void
-        + clearSession(): void
-        - SceneManager()
-    }
-
-
-    class ValidationUtils {
-        - EMAIL_PATTERN: Pattern
-        - USERNAME_PATTERN: Pattern
-        - PASSWORD_PATTERN: Pattern
-        - PHONE_PATTERN: Pattern
-
-        + isValidEmail(email: String): boolean
-        + isValidUsername(username: String): boolean
-        + isValidPassword(password: String): boolean
-        + isValidPhone(phone: String): boolean
-        + isNumeric(str: String): boolean
-        + isInteger(str: String): boolean
-        + isPositiveNumber(str: String): boolean
-        + isPositiveInteger(str: String): boolean
-        - ValidationUtils()
-    }
-
-    class PasswordUtils {
-        - WORKLOAD: int
-        + hashPassword(plainTextPassword: String): String
-        + checkPassword(plainTextPassword: String, hashedPassword: String): boolean
-        + isPasswordStrong(password: String): boolean
-        - isSpecialCharacter(c: char): boolean
-        + getPasswordRequirements(): String
+        + Seat()
+        + Seat(seatId: Integer, seatCode: String, busId: Integer, seatType: String)
+        .. getters/setters ..
+        + getSeatId(): Integer
+        + setSeatId(seatId: Integer): void
+        + getSeatCode(): String
+        + setSeatCode(seatCode: String): void
+        + getBusId(): Integer
+        + setBusId(busId: Integer): void
+        + getSeatType(): String
+        + setSeatType(seatType: String): void
+        + isAvailable(): boolean
+        + setAvailable(available: boolean): void
+        + toString(): String
     }
 }
 
-package com.busticket.services {
-    class AuthService {
-        - userDAO: UserDAO
-
-        + AuthService()
-        + register(username: String, password: String, email: String, fullName: String, phone: String, address: String, role: String): boolean
-        + login(username: String, password: String): Optional<User>
+package "com.busticket.dao" #SECONDARY_COLOR {
+    interface DAO<T> {
+        + save(entity: T): boolean
+        + update(entity: T): boolean
+        + delete(id: int): boolean
+        + findById(id: int): Optional<T>
+        + findAll(): List<T>
     }
 
+    class BookingDAO {
+        - connection : Connection
+        + BookingDAO()
+        + createBooking(Booking booking) : Booking
+        + findById(Integer bookingId) : Booking
+        + findByUserId(Integer userId) : List<Booking>
+        - mapResultSetToBooking(ResultSet rs) : Booking
+    }
+
+    class UserDAO {
+        - connection : Connection
+        + UserDAO()
+        + save(user : User) : boolean
+        + update(user : User) : boolean
+        + delete(id : int) : boolean
+        + findById(id : int) : Optional<User>
+        + findByUsername(username : String) : Optional<User>
+        + findByEmail(email : String) : Optional<User>
+        + findAll() : List<User>
+        + isUsernameExists(username : String) : boolean
+        + isEmailExists(email : String) : boolean
+        - mapResultSetToUser(rs : ResultSet) : User
+    }
+
+    class ScheduleDAO {
+        - connection : Connection
+        + ScheduleDAO()
+        + searchSchedules(String from, String to, LocalDate date, String busType) : List<Booking>
+        + getLocations() : List<String>
+        - mapResultSetToSchedule(ResultSet rs) : Booking
+    }
+
+    class SeatDAO {
+        - connection : Connection
+        + SeatDAO()
+        + findBySeatId(int seatId) : int
+        + findBySeatCode(String seatCode) : String
+        + getSeatIdByCode(String seatCode) : int
+        + checkSeat(int scheduleId, int seatId, LocalDate travelDate) : boolean
+        + getAvailableSeats(int scheduleId, LocalDate travelDate) : List<Seat>
+        + getAllSeatsByBusId(int busId) : List<Seat>
+        - mapResultSetToSeat(ResultSet rs) : Seat
+    }
+}
+
+package "com.busticket.services" #SERVICE_COLOR {
     class BookingService {
-        - bookingDAO: BookingDAO
-
+        - bookingDAO : BookingDAO
         + BookingService()
-        + createBooking(booking: Booking): Booking
-        - validateBooking(booking: Booking): void
-        + getBookingById(bookingId: Integer): Booking
-        + getUserBookings(userId: Integer): List<Booking>
+        + createBooking(Booking booking) : Booking
+        + getBookingById(Integer bookingId) : Booking
+        + getUserBookings(Integer userId) : List<Booking>
     }
 
     class ScheduleService {
-        - scheduleDAO: ScheduleDAO
-
+        - scheduleDAO : ScheduleDAO
         + ScheduleService()
-        + searchAvailableSchedules(from: String, to: String, date: LocalDate, busType: String): List<Booking>
-        + getAllLocations(): List<String>
+        + searchAvailableSchedules(String from, String to, LocalDate date, String busType) : List<Booking>
+        + getAllLocations() : List<String>
     }
 
     class SeatService {
-        - seatDAO: SeatDAO
-
+        - seatDAO : SeatDAO
         + SeatService()
-        + getSeatCodeByID(seatCode: String): int
+        + getSeatCodeByID(String seatCode) : int
+        + isSeatAvailable(int scheduleId, int seatId, LocalDate travelDate) : boolean
+    }
+
+    class AuthService {
+        - userDAO : UserDAO
+        + AuthService()
+        + register(String username, String password, String email, String fullName, String phone, String address, String role) : boolean
+        + login(String username, String password) : Optional<User>
     }
 }
 
-package com.busticket.controllers {
+package "com.busticket.controllers" #CONTROLLER_COLOR {
     class AuthController {
-        - loginPane : AnchorPane
-        - registerPane : AnchorPane
-        - loginUsername : TextField
-        - loginPassword : PasswordField
-        - loginButton : Button
-        - registerLink : Hyperlink
-        - regUsername : TextField
-        - regPassword : PasswordField
-        - regConfirmPassword : PasswordField
-        - regEmail : TextField
-        - regFullName : TextField
-        - regPhone : TextField
-        - regAddress : TextArea
-        - registerButton : Button
-        - loginLink : Hyperlink
-        - authService : AuthService
-        + AuthController() : AuthController
-        + initialize(URL url, ResourceBundle resourceBundle) : void
-        + showLoginForm() : void
-        + showRegisterForm() : void
-        + handleLogin(ActionEvent event) : void
-        + handleRegister(ActionEvent event) : void
-    }
-
-    class SeatSelectionController {
-        + seatSelectionPane : AnchorPane
-        + seatingGrid : GridPane
-        + busNameLabel : Label
-        + dateLabel : Label
-        + selectedSeatsListView : ListView<String>
-        + totalAmountLabel : Label
-        - bookingService : BookingService
-        - seatDAO : SeatDAO
-        - alertHelper : AlertHelper
-        - seatService : SeatService
-        - selectedSeats : ObservableList<String>
-        - selectedSeatsSet : Set<String>
-        + SeatSelectionController() : SeatSelectionController
-        + initialize() : void
-        + handleBack(ActionEvent actionEvent) : void
-        + handleSubmit(ActionEvent actionEvent) : void
-        + handleSelect(MouseEvent mouseEvent) : void
-        - updateSeatAvailability(Integer scheduleID, LocalDate travelDate) : void
+        - userDAO: UserDAO
+        + initialize(stage: Stage): void
+        + login(username: String, password: String): User
+        + register(user: User): boolean
     }
 
     class BookingController {
-        - bookingPane : AnchorPane
-        - fromLocation : ComboBox<String>
-        - toLocation : ComboBox<String>
-        - travelDate : DatePicker
-        - busType : ComboBox<String>
-        - busScheduleTable : TableView<Booking>
-        - scheduleColumn : TableColumn<Booking, Integer>
-        - busNameColumn : TableColumn<Booking, String>
-        - departureColumn : TableColumn<Booking, String>
-        - arrivalColumn : TableColumn<Booking, String>
-        - typeColumn : TableColumn<Booking, String>
-        - fareColumn : TableColumn<Booking, BigDecimal>
-        - scheduleService : ScheduleService
+        - bookingDAO: BookingDAO
+        - scheduleDAO: ScheduleDAO
+        - seatDAO: SeatDAO
+        + createBooking(booking: Booking): Booking
+        + searchSchedules(from: String, to: String, date: LocalDate): List<Schedule>
+    }
 
-        + initialize() : void
-        - setupComboBoxes() : void
-        - setupTable() : void
-        + handleSearch() : void
-        + handleSeatSelection() : void
-        + handleBack() : void
-        - showAlert(message : String) : void
-        + getBookingPane() : AnchorPane
-        + setBookingPane(bookingPane : AnchorPane) : void
+    class SeatSelectionController {
+        - seatDAO: SeatDAO
+        - scheduleDAO: ScheduleDAO
+        + initialize(location: URL, resources: ResourceBundle): void
+        + selectSeat(seatCode: String): boolean
+        + confirmSeatSelection(): void
     }
 
     class TicketViewController {
-        - bookingIdLabel : Label
-        - passengerLabel : Label
-        - fromLabel : Label
-        - toLabel : Label
-        - dateLabel : Label
-        - busLabel : Label
-        - seatLabel : Label
-        - amountLabel : Label
-        - alertHelper : AlertHelper
-        + TicketViewController() : TicketViewController
-        + initialize() : void
-        + handleBack() : void
+        - bookingDAO: BookingDAO
+        + initialize(location: URL, resources: ResourceBundle): void
+        + displayTicket(bookingId: Integer): void
+        + printTicket(): void
     }
 }
 
-' DAO Layer Relationships
-BookingDAO --> "1" Booking : manages >
-BookingDAO --> "1" Connection : uses >
+package "com.busticket.utils" #UTILS_COLOR {
+    class AlertHelper {
+        + showError(message: String): void
+        + showInfo(message: String): void
+        + showConfirmation(message: String): boolean
+    }
 
-UserDAO --> "1" User : manages >
-UserDAO --> "1" Connection : uses >
+    class SceneManager {
+        + {static} switchScene(String fxmlPath, Object controller): void
+    }
 
-ScheduleDAO --> "1" Booking : manages >
-ScheduleDAO --> "1" Connection : uses >
+    class ValidationUtils {
+        - {static} EMAIL_PATTERN: Pattern
+        - {static} USERNAME_PATTERN: Pattern
+        - {static} PASSWORD_PATTERN: Pattern
+        - {static} PHONE_PATTERN: Pattern
+        - ValidationUtils()
+        + {static} isValidEmail(email: String): boolean
+        + {static} isValidUsername(username: String): boolean
+        + {static} isValidPassword(password: String): boolean
+        + {static} isValidPhone(phone: String): boolean
+        + {static} isNumeric(str: String): boolean
+        + {static} isInteger(str: String): boolean
+        + {static} isPositiveNumber(str: String): boolean
+        + {static} isPositiveInteger(str: String): boolean
+        + {static} validateBooking(booking: Booking): void
+    }
 
-SeatDAO --> "1" Seat : manages >
-SeatDAO --> "1" Connection : uses >
+    class PasswordUtils {
+        + {static} hashPassword(password: String): String
+        + {static} checkPassword(password: String, hashedPassword: String): boolean
+    }
+}
 
-' Model Layer Relationships
-Booking --> "1" Bus : has >
-Booking --> "1" Schedule : has >
-Booking --> "1" Seat : has >
-Booking --> "1" User : belongs to >
+' Relationships
+DatabaseConnection <-- BookingDAO: uses
+DatabaseConnection <-- UserDAO: uses
+DatabaseConnection <-- ScheduleDAO: uses
+DatabaseConnection <-- SeatDAO: uses
 
-Bus --> "1" BusType : has >
+DAO <|.. UserDAO
+DAO <|.. BookingDAO
 
-Schedule --> "1" Bus : belongs to >
+' Service to DAO relationships
+BookingService --> "1" BookingDAO: uses
+ScheduleService --> "1" ScheduleDAO: uses
+SeatService --> "1" SeatDAO: uses
+AuthService --> "1" UserDAO: uses
 
-User --> "1" UserRole : has >
+' Controller to Service relationships
+AuthController --> "1" AuthService: uses
+BookingController --> "1" BookingService: uses
+BookingController --> "1" ScheduleService: uses
+BookingController --> "1" SeatService: uses
+SeatSelectionController --> "1" SeatService: uses
+TicketViewController --> "1" BookingService: uses
 
-' Service Layer Relationships
-AuthService --> "1" UserDAO : uses >
+' Service to Utilities
+BookingService --> ValidationUtils: uses
+AuthService --> PasswordUtils: uses
 
-BookingService --> "1" BookingDAO : uses >
+User "1" *-- "1" UserRole: has
+Booking "1" --> "1" Bus: contains
+Booking "1" --> "1" Schedule: references
+Booking "1" --> "1" Seat: references
+Bus "1" *-- "1" BusType: has
+Bus "1" --> "*" Seat: contains
 
-ScheduleService --> "1" ScheduleDAO : uses >
+' Service for Models mapping
+BookingService --> Booking: manages
+ScheduleService --> Schedule: manages
+SeatService --> Seat: manages
+AuthService --> User: manages
 
-SeatService --> "1" SeatDAO : uses >
-
-' Controller Layer Relationships
-AuthController --> "1" AuthService : uses >
-
-SeatSelectionController --> "1" BookingService : uses >
-SeatSelectionController --> "1" SeatDAO : uses >
-SeatSelectionController --> "1" SeatService : uses >
-SeatSelectionController --> "1" AlertHelper : uses >
-
-BookingController --> "1" ScheduleService : uses >
-
-TicketViewController --> "1" AlertHelper : uses >
-
-' Utility Layer Relationships
-AlertHelper --> "*" Controller : used by >
-
-SceneManager --> "*" Controller : used by >
-
-ValidationUtils --> "*" Controller : used by >
-
-PasswordUtils --> "1" AuthService : used by >
+ValidationUtils ..> Booking: validates
 
 @enduml

@@ -55,8 +55,7 @@ public class SeatSelectionController {
 
 //    private BookingDAO bookingDAO;
     private BookingService bookingService;
-    private SeatDAO seatDAO;
-    private AlertHelper alertHelper;
+//    private SeatDAO seatDAO;
     private SeatService seatService;
 
     private final ObservableList<String> selectedSeats = FXCollections.observableArrayList();
@@ -66,8 +65,7 @@ public class SeatSelectionController {
     public SeatSelectionController() {
 //        this.bookingDAO = new BookingDAO();
         this.bookingService = new BookingService();
-        this.seatDAO = new SeatDAO();
-        this.alertHelper = new AlertHelper();
+//        this.seatDAO = new SeatDAO();
         this.seatService = new SeatService();
     }
 
@@ -117,7 +115,7 @@ public class SeatSelectionController {
 
             // Validate required data
             if (selectedSchedule == null || busName == null || dateStr == null || loggedInUser == null) {
-                alertHelper.showErrorAlert("Error", "Missing required booking information. Please try again.");
+                AlertHelper.showErrorAlert("Error", "Missing required booking information. Please try again.");
                 handleBack(null);
                 return;
             }
@@ -128,7 +126,7 @@ public class SeatSelectionController {
 
         } catch (Exception e) {
             System.err.println("Error initializing seat selection: " + e.getMessage());
-            alertHelper.showErrorAlert("Error", "Failed to initialize seat selection. Please try again.");
+            AlertHelper.showErrorAlert("Error", "Failed to initialize seat selection. Please try again.");
             handleBack(null);
         }
     }
@@ -146,7 +144,7 @@ public class SeatSelectionController {
 
                 try {
                     int seatID = seatService.getSeatCodeByID(seatCode);
-                    boolean isAvailable = seatDAO.isSeatAvailable(scheduleID, seatID, travelDate);
+                    boolean isAvailable = seatService.isSeatAvailable(scheduleID, seatID, travelDate);
 
                     if (!isAvailable) {
                         // Set style for unavailable seats
@@ -176,7 +174,7 @@ public class SeatSelectionController {
     @FXML
     public void handleSubmit(ActionEvent actionEvent) {
         if (selectedSeatsSet.isEmpty()) {
-            alertHelper.showErrorAlert("Error", "Please select at least one seat.");
+            AlertHelper.showErrorAlert("Error", "Please select at least one seat.");
             return;
         } else {
             System.out.println("selectedSeatsSet: " + selectedSeatsSet + "\nselectedSeats: " + selectedSeats);
@@ -195,7 +193,7 @@ public class SeatSelectionController {
 
             // Validate required data
             if (userID == null || scheduleID == null || dateStr == null || farePerSeat == null) {
-                alertHelper.showErrorAlert("Error", "Missing required booking information.");
+                AlertHelper.showErrorAlert("Error", "Missing required booking information.");
                 return;
             }
 
@@ -206,7 +204,7 @@ public class SeatSelectionController {
                     int seatID = seatService.getSeatCodeByID(seatCode);
                     seatCodeToIdMap.put(seatCode, seatID);
                 } catch (SQLException e) {
-                    alertHelper.showErrorAlert("Error", "Invalid seat number: " + seatCode);
+                    AlertHelper.showErrorAlert("Error", "Invalid seat number: " + seatCode);
                     return;
                 }
             }
@@ -222,8 +220,8 @@ public class SeatSelectionController {
 
             // Check seat availability
             for (Map.Entry<String, Integer> entry : seatCodeToIdMap.entrySet()) {
-                if (!seatDAO.isSeatAvailable(scheduleID, entry.getValue(), travelDate.toLocalDate())) {
-                    alertHelper.showErrorAlert("Error", "Seat " + entry.getKey() + " is already booked. Please select different seats.");
+                if (!seatService.isSeatAvailable(scheduleID, entry.getValue(), travelDate.toLocalDate())) {
+                    AlertHelper.showErrorAlert("Error", "Seat " + entry.getKey() + " is already booked. Please select different seats.");
                     return;
                 }
             }
@@ -266,7 +264,7 @@ public class SeatSelectionController {
                     System.err.println("Error rolling back transaction: " + ex.getMessage());
                 }
             }
-            alertHelper.showErrorAlert("Error", "Failed to create booking: " + e.getMessage());
+            AlertHelper.showErrorAlert("Error", "Failed to create booking: " + e.getMessage());
             e.printStackTrace();
         } finally {
             // Restore original auto-commit setting

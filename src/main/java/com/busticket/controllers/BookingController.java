@@ -4,6 +4,7 @@ import com.busticket.models.Booking;
 import com.busticket.models.User;
 import com.busticket.services.BookingService;
 import com.busticket.services.ScheduleService;
+import com.busticket.utils.AlertHelper;
 import com.busticket.utils.SceneManager;
 
 import javafx.beans.property.*;
@@ -104,7 +105,7 @@ public class BookingController {
         String type = busType.getValue();
 
         if (from == null || to == null || date == null) {
-            showAlert("Please fill in all search criteria");
+            AlertHelper.showWarningAlert("Warning","Please fill in all search criteria");
             return;
         }
 
@@ -114,7 +115,7 @@ public class BookingController {
             );
             busScheduleTable.setItems(schedules);
         } catch (RuntimeException e) {
-            showAlert("Error searching schedules: " + e.getMessage());
+            AlertHelper.showWarningAlert("Warning","Error searching schedules: " + e.getMessage());
         }
     }
 
@@ -123,7 +124,7 @@ public class BookingController {
     private void handleSeatSelection() {
         Booking selectedBooking = busScheduleTable.getSelectionModel().getSelectedItem();
         if (selectedBooking == null) {
-            showAlert("Please select a schedule first");
+            AlertHelper.showWarningAlert("Warning","Please select a schedule first");
             return;
         }
         System.out.println("Selected schedule ID: " + scheduleColumn.getCellData(selectedBooking) + "\n");
@@ -140,14 +141,6 @@ public class BookingController {
     private void handleBack() {
         // Navigate back to previous view
         SceneManager.switchScene("/fxml/login.fxml");
-    }
-
-    private void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Warning");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
     public AnchorPane getBookingPane() {

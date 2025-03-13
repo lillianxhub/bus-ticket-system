@@ -1,9 +1,9 @@
 package com.busticket.services;
 
-//import com.busticket.config.DatabaseConnection;
 import com.busticket.dao.BookingDAO;
 import com.busticket.models.Booking;
 import com.busticket.models.Bus;
+import com.busticket.utils.ValidationUtils;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -21,7 +21,7 @@ public class BookingService {
     public Booking createBooking(Booking booking) {
         try {
             // Validate booking data
-            validateBooking(booking);
+            ValidationUtils.validateBooking(booking);
 
             // Set default status if not set
             if (booking.getStatus() == null) {
@@ -39,27 +39,6 @@ public class BookingService {
 
         } catch (SQLException e) {
             throw new RuntimeException("Error creating booking: " + e.getMessage());
-        }
-    }
-
-    private void validateBooking(Booking booking) {
-        if (booking.getUserId() == null) {
-            throw new IllegalArgumentException("User ID must be provided");
-        }
-        if (booking.getSchedule() == null || booking.getSchedule().getScheduleId() == null) {
-            throw new IllegalArgumentException("Schedule must be provided");
-        }
-        if (booking.getSeatId() == null) {
-            throw new IllegalArgumentException("Seat must be selected");
-        }
-        if (booking.getTravelDate() == null) {
-            throw new IllegalArgumentException("Travel date must be provided");
-        }
-        if (booking.getTotalFare() == null) {
-            throw new IllegalArgumentException("Total fare must be provided");
-        }
-        if (booking.getTravelDate().isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("Travel date cannot be in the past");
         }
     }
 

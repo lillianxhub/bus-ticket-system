@@ -1,5 +1,8 @@
 package com.busticket.utils;
 
+import com.busticket.models.Booking;
+
+import java.time.LocalDate;
 import java.util.regex.Pattern;
 
 public class ValidationUtils {
@@ -133,5 +136,26 @@ public class ValidationUtils {
             return false;
         }
         return Integer.parseInt(str) > 0;
+    }
+
+    public static void validateBooking(Booking booking) {
+        if (booking.getUserId() == null) {
+            throw new IllegalArgumentException("User ID must be provided");
+        }
+        if (booking.getSchedule() == null || booking.getSchedule().getScheduleId() == null) {
+            throw new IllegalArgumentException("Schedule must be provided");
+        }
+        if (booking.getSeatId() == null) {
+            throw new IllegalArgumentException("Seat must be selected");
+        }
+        if (booking.getTravelDate() == null) {
+            throw new IllegalArgumentException("Travel date must be provided");
+        }
+        if (booking.getTotalFare() == null) {
+            throw new IllegalArgumentException("Total fare must be provided");
+        }
+        if (booking.getTravelDate().isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Travel date cannot be in the past");
+        }
     }
 }
