@@ -3,6 +3,7 @@ package com.busticket.services;
 import com.busticket.dao.UserDAO;
 import com.busticket.models.User;
 import com.busticket.utils.PasswordUtils;
+import com.busticket.utils.ValidationUtils;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -25,6 +26,9 @@ public class AuthService {
 
             if (userDAO.isEmailExists(email)) {
                 throw new IllegalArgumentException("Email already exists");
+            }
+            if (ValidationUtils.isValidPhone(phone)) {
+                throw new IllegalArgumentException("Invalid phone number");
             }
 
             // Hash the password

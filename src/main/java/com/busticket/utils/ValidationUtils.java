@@ -18,7 +18,7 @@ public class ValidationUtils {
             Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*#?&]{8,}$");
 
     private static final Pattern PHONE_PATTERN =
-            Pattern.compile("^\\+?[0-9]{10,15}$");
+            Pattern.compile("^(0\\d{9}|\\+66\\d{9})$");
 
     private ValidationUtils() {
         // Private constructor to prevent instantiation
